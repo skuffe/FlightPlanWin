@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Entity;
 
-namespace AirfieldModel
+namespace FlightPlanModel
 {
 	public partial class FlightPlanContext : DbContext
 	{
