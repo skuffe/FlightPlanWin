@@ -51,6 +51,8 @@ namespace FlightPlanWin
             this.comboBox1.ItemsSource = (from c in _context.Airfields
 										  orderby c.Country
 										  select c.Country).Distinct().ToList();
+
+            MessageBox.Show(Utility.getObservation("sadasdswd"));
 		}
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
