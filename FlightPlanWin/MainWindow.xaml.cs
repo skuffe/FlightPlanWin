@@ -25,6 +25,7 @@ namespace FlightPlanWin
 	{
 		private FlightPlanContext _context = new FlightPlanContext();
         private readonly BackgroundWorker worker = new BackgroundWorker();
+		private CollectionViewSource airfieldViewSource;
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -41,14 +42,15 @@ namespace FlightPlanWin
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 
-			System.Windows.Data.CollectionViewSource airfieldViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("airfieldViewSource")));
+			this.airfieldViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("airfieldViewSource")));
 			// Load data by setting the CollectionViewSource.Source property:
 			// airfieldViewSource.Source = [generic data source]
-			_context.Airfields.Load();
+			//_context.Airfields.Load();
 
-			airfieldViewSource.Source = _context.Airfields.Local;
+//			airfieldViewSource.Source = _context.Airfields.Local;
 
-            MessageBox.Show(Utility.getObservation("sad"));
+										  orderby c.Country
+										  select c.Country).Distinct().ToList();
 		}
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -59,8 +61,18 @@ namespace FlightPlanWin
 
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+			string selectedValue = comboBox1.SelectedItem.ToString();
 
+			var airfields = (from a in _context.Airfields
+							 where a.Country == selectedValue
+							 orderby a.Name
+							 select a).ToList();
 
+			foreach (Airfield af in airfields) {
+				af.Observation = "Patter!";
+			}
+
+			this.airfieldViewSource.Source = airfields;
         }
 
         // This event handler is where the actual,
