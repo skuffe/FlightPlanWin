@@ -48,7 +48,7 @@ namespace FlightPlanWin
 			//_context.Airfields.Load();
 
 //			airfieldViewSource.Source = _context.Airfields.Local;
-
+            this.comboBox1.ItemsSource = (from c in _context.Airfields
 										  orderby c.Country
 										  select c.Country).Distinct().ToList();
 		}
