@@ -47,6 +47,8 @@ namespace FlightPlanWin
 			_context.Airfields.Load();
 
 			airfieldViewSource.Source = _context.Airfields.Local;
+
+            MessageBox.Show(Utility.getObservation("sad"));
 		}
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)

@@ -20,6 +20,6 @@
 			</DataGrid.Columns>
 		</DataGrid>
         <ProgressBar Height="10" HorizontalAlignment="Left" Margin="0,301,0,0" Name="progressBar1" VerticalAlignment="Top" Width="503" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="120" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox1_SelectionChanged" />
     </Grid>
 </Window>
