@@ -1,25 +1,25 @@
 ﻿<Window x:Class="FlightPlanWin.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="FlightPlanWin" Height="350" Width="525" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:my="clr-namespace:FlightPlanModel;assembly=FlightPlanModel" Loaded="Window_Loaded">
+        Title="FlightPlanWin" Height="350" Width="525" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:my="clr-namespace:FlightPlanModel;assembly=FlightPlanModel" Loaded="Window_Loaded" VerticalAlignment="Top">
 	<Window.Resources>
 		<CollectionViewSource x:Key="airfieldViewSource" d:DesignSource="{d:DesignInstance my:Airfield, CreateList=True}" />
 	</Window.Resources>
 	<Grid DataContext="{StaticResource airfieldViewSource}">
-		<DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True" Height="270" HorizontalAlignment="Left" ItemsSource="{Binding}" Name="airfieldDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalAlignment="Top" Width="503" Margin="0,29,0,0">
+		<DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True" Height="270" HorizontalAlignment="Left" ItemsSource="{Binding}" Name="airfieldDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalAlignment="Stretch" Width="503" Margin="0,29,0,0">
 			<DataGrid.Columns>
-				<DataGridTextColumn x:Name="airfieldIDColumn" Binding="{Binding Path=AirfieldID}" Header="Airfield ID" Width="SizeToHeader" />
+				<!--<DataGridTextColumn x:Name="airfieldIDColumn" Binding="{Binding Path=AirfieldID}" Header="Airfield ID" Width="SizeToHeader" />-->
 				<DataGridTextColumn x:Name="countryColumn" Binding="{Binding Path=Country}" Header="Country" Width="SizeToHeader" />
+				<DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=Name}" Header="Name" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="iCAOColumn" Binding="{Binding Path=ICAO}" Header="ICAO" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="latitudeColumn" Binding="{Binding Path=Latitude}" Header="Latitude" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="longitudeColumn" Binding="{Binding Path=Longitude}" Header="Longitude" Width="SizeToHeader" />
-				<DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=Name}" Header="Name" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="observationColumn" Binding="{Binding Path=Observation}" Header="Observation" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="tilecolColumn" Binding="{Binding Path=Tilecol}" Header="Tilecol" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="tilerowColumn" Binding="{Binding Path=Tilerow}" Header="Tilerow" Width="SizeToHeader" />
 			</DataGrid.Columns>
 		</DataGrid>
         <ProgressBar Height="10" HorizontalAlignment="Left" Margin="0,301,0,0" Name="progressBar1" VerticalAlignment="Top" Width="503" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="120" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox1_SelectionChanged" />
     </Grid>
 </Window>
