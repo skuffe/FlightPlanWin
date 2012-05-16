@@ -84,13 +84,13 @@ namespace FlightPlanWin
                              orderby a.Name
                              select a).ToList();
             int airfieldsCount = airfields.Count;
-            int counter = 0;
+            int counter = 1;
 
             foreach (Airfield af in airfields)
             {
-                int percentage = (counter / airfieldsCount) * 100;
-                Console.WriteLine(percentage);
-                //Console.WriteLine(counter);
+				Console.WriteLine("{0}/{1}*100", counter, airfieldsCount);
+				double percentage = Math.Floor((double)(((double)counter / (double)airfieldsCount) * 100));
+				worker.ReportProgress((int)percentage);
                 af.Observation = Utility.getObservation(af.ICAO);
                 counter++;
             }
