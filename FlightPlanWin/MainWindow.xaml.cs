@@ -34,6 +34,7 @@ namespace FlightPlanWin
 
         private void InitializeBackgroundWorker()
         {
+            worker.WorkerReportsProgress = true;
             worker.DoWork += new DoWorkEventHandler(worker_DoWork);
             worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
             worker.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
@@ -51,8 +52,6 @@ namespace FlightPlanWin
             this.comboBox1.ItemsSource = (from c in _context.Airfields
 										  orderby c.Country
 										  select c.Country).Distinct().ToList();
-
-            MessageBox.Show(Utility.getObservation("EBBE"));
 		}
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -63,18 +62,7 @@ namespace FlightPlanWin
 
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-			string selectedValue = comboBox1.SelectedItem.ToString();
-
-			var airfields = (from a in _context.Airfields
-							 where a.Country == selectedValue
-							 orderby a.Name
-							 select a).ToList();
-
-			foreach (Airfield af in airfields) {
-				af.Observation = "Patter!";
-			}
-
-			this.airfieldViewSource.Source = airfields;
+            worker.RunWorkerAsync(comboBox1.SelectedItem.ToString());
         }
 
         // This event handler is where the actual,
@@ -89,7 +77,26 @@ namespace FlightPlanWin
             // object. This is will be available to the 
             // RunWorkerCompleted eventhandler.
             // e.Result = ComputeFibonacci((int)e.Argument, worker, e);
+            string selectedValue = (string)e.Argument;
+            
+            var airfields = (from a in _context.Airfields
+                             where a.Country == selectedValue
+                             orderby a.Name
+                             select a).ToList();
+            int airfieldsCount = airfields.Count;
+            int counter = 0;
 
+            foreach (Airfield af in airfields)
+            {
+                int percentage = (counter / airfieldsCount) * 100;
+                Console.WriteLine(percentage);
+                //Console.WriteLine(counter);
+                af.Observation = Utility.getObservation(af.ICAO);
+                counter++;
+            }
+
+            e.Result = airfields;
+            
         }
 
         // This event handler deals with the results of the
@@ -115,13 +122,14 @@ namespace FlightPlanWin
             {
                 // Finally, handle the case where the operation 
                 // succeeded.
+                this.airfieldViewSource.Source = (List<Airfield>)e.Result;
             }
         }
 
         // This event handler updates the progress bar.
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            this.progressBar1.Value = e.ProgressPercentage;
+            progressBar1.Value = e.ProgressPercentage;
         }
 	}
 }
