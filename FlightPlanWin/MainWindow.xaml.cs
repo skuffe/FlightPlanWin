@@ -62,7 +62,14 @@ namespace FlightPlanWin
 
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            worker.RunWorkerAsync(comboBox1.SelectedItem.ToString());
+            if (!worker.IsBusy)
+            {
+                worker.RunWorkerAsync(comboBox1.SelectedItem.ToString());
+            }
+            else
+            {
+                MessageBox.Show("Please wait while the fetcher finishes");
+            }
         }
 
         // This event handler is where the actual,
