@@ -52,7 +52,7 @@ namespace FlightPlanWin
 										  orderby c.Country
 										  select c.Country).Distinct().ToList();
 
-            MessageBox.Show(Utility.getObservation("sadasdswd"));
+            MessageBox.Show(Utility.getObservation("EBBE"));
 		}
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)

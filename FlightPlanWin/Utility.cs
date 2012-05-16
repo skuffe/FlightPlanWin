@@ -12,7 +12,6 @@ namespace FlightPlanWin
         {
             try
             {
-                icao = "EBBE";
                 string itemContent = "";
                 String URLString = "http://api.geonames.org/weatherIcao?ICAO=" + icao + "&username=bigherman";
                 XmlTextReader reader = new XmlTextReader(URLString);
@@ -21,14 +20,12 @@ namespace FlightPlanWin
                 {
                     if (reader.NodeType == XmlNodeType.Element && reader.Name == "observation")
                     {
-                        XmlReader inner = reader.ReadSubtree();
-                        while (inner.Read())
-                        {
-                            if (inner.NodeType == XmlNodeType.Element && inner.Name == "observation")
-                            {
-                                itemContent = inner.ReadString();
-                            }
-                        }
+                        reader.ReadToFollowing("observation");
+                        itemContent = reader.ReadInnerXml();
+                    }
+                    else if (reader.Name == "status")
+                    {
+                        itemContent = reader.GetAttribute(0);
                     }
                 }
                 return itemContent;
