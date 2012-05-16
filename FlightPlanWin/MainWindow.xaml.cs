@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using FlightPlanModel;
+using System.ComponentModel;
+using System.Data;
 
 namespace FlightPlanWin
 {
@@ -22,10 +24,19 @@ namespace FlightPlanWin
 	public partial class MainWindow : Window
 	{
 		private FlightPlanContext _context = new FlightPlanContext();
+        private readonly BackgroundWorker worker = new BackgroundWorker();
 		public MainWindow()
 		{
 			InitializeComponent();
+            InitializeBackgroundWorker();
 		}
+
+        private void InitializeBackgroundWorker()
+        {
+            worker.DoWork += new DoWorkEventHandler(worker_DoWork);
+            worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
+            worker.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
+        }
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
@@ -43,5 +54,58 @@ namespace FlightPlanWin
 			base.OnClosing(e);
 			this._context.Dispose();
 		}
+
+        private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+
+        }
+
+        // This event handler is where the actual,
+        // potentially time-consuming work is done.
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // Get the BackgroundWorker that raised this event.
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            // Assign the result of the computation
+            // to the Result property of the DoWorkEventArgs
+            // object. This is will be available to the 
+            // RunWorkerCompleted eventhandler.
+            // e.Result = ComputeFibonacci((int)e.Argument, worker, e);
+
+        }
+
+        // This event handler deals with the results of the
+        // background operation.
+        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            // First, handle the case where an exception was thrown.
+            if (e.Error != null)
+            {
+                MessageBox.Show(e.Error.Message);
+            }
+            else if (e.Cancelled)
+            {
+                // Next, handle the case where the user canceled 
+                // the operation.
+                // Note that due to a race condition in 
+                // the DoWork event handler, the Cancelled
+                // flag may not have been set, even though
+                // CancelAsync was called.
+
+            }
+            else
+            {
+                // Finally, handle the case where the operation 
+                // succeeded.
+            }
+        }
+
+        // This event handler updates the progress bar.
+        private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            this.progressBar1.Value = e.ProgressPercentage;
+        }
 	}
 }
