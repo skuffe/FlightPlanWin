@@ -62,12 +62,9 @@ namespace FlightPlanWin
 
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!worker.IsBusy)
-            {
+            if (!worker.IsBusy) {
                 worker.RunWorkerAsync(comboBox1.SelectedItem.ToString());
-            }
-            else
-            {
+            } else {
                 MessageBox.Show("Please wait while the fetcher finishes");
             }
         }
@@ -93,10 +90,9 @@ namespace FlightPlanWin
             int airfieldsCount = airfields.Count;
             int counter = 1;
 
-            foreach (Airfield af in airfields)
-            {
-				Console.WriteLine("{0}/{1}*100", counter, airfieldsCount);
+            foreach (Airfield af in airfields) {
 				double percentage = Math.Floor((double)(((double)counter / (double)airfieldsCount) * 100));
+				Console.WriteLine("{0}/{1}*100=~{2}", counter, airfieldsCount, (int)percentage);
 				worker.ReportProgress((int)percentage);
                 af.Observation = Utility.getObservation(af.ICAO);
                 counter++;
@@ -111,12 +107,9 @@ namespace FlightPlanWin
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             // First, handle the case where an exception was thrown.
-            if (e.Error != null)
-            {
+            if (e.Error != null) {
                 MessageBox.Show(e.Error.Message);
-            }
-            else if (e.Cancelled)
-            {
+            } else if (e.Cancelled) {
                 // Next, handle the case where the user canceled 
                 // the operation.
                 // Note that due to a race condition in 
@@ -124,9 +117,7 @@ namespace FlightPlanWin
                 // flag may not have been set, even though
                 // CancelAsync was called.
 
-            }
-            else
-            {
+            } else {
                 // Finally, handle the case where the operation 
                 // succeeded.
                 this.airfieldViewSource.Source = (List<Airfield>)e.Result;

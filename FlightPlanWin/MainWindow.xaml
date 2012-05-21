@@ -6,20 +6,20 @@
 		<CollectionViewSource x:Key="airfieldViewSource" d:DesignSource="{d:DesignInstance my:Airfield, CreateList=True}" />
 	</Window.Resources>
 	<Grid DataContext="{StaticResource airfieldViewSource}">
-		<DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True" Height="270" HorizontalAlignment="Left" ItemsSource="{Binding}" Name="airfieldDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalAlignment="Stretch" Width="503" Margin="0,29,0,0">
+		<DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True" HorizontalAlignment="Stretch" ItemsSource="{Binding}" Name="airfieldDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalAlignment="Stretch" Width="Auto" Margin="0,29,0,12" IsReadOnly="True">
 			<DataGrid.Columns>
 				<!--<DataGridTextColumn x:Name="airfieldIDColumn" Binding="{Binding Path=AirfieldID}" Header="Airfield ID" Width="SizeToHeader" />-->
-				<DataGridTextColumn x:Name="countryColumn" Binding="{Binding Path=Country}" Header="Country" Width="SizeToHeader" />
-				<DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=Name}" Header="Name" Width="SizeToHeader" />
-				<DataGridTextColumn x:Name="iCAOColumn" Binding="{Binding Path=ICAO}" Header="ICAO" Width="SizeToHeader" />
+				<DataGridTextColumn x:Name="countryColumn" Binding="{Binding Path=Country}" Header="Country" Width="Auto" />
+				<DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=Name}" Header="Name" Width="Auto" />
+				<DataGridTextColumn x:Name="iCAOColumn" Binding="{Binding Path=ICAO}" Header="ICAO" Width="Auto" />
 				<DataGridTextColumn x:Name="latitudeColumn" Binding="{Binding Path=Latitude}" Header="Latitude" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="longitudeColumn" Binding="{Binding Path=Longitude}" Header="Longitude" Width="SizeToHeader" />
-				<DataGridTextColumn x:Name="observationColumn" Binding="{Binding Path=Observation}" Header="Observation" Width="SizeToHeader" />
-				<DataGridTextColumn x:Name="tilecolColumn" Binding="{Binding Path=Tilecol}" Header="Tilecol" Width="SizeToHeader" />
-				<DataGridTextColumn x:Name="tilerowColumn" Binding="{Binding Path=Tilerow}" Header="Tilerow" Width="SizeToHeader" />
+				<DataGridTextColumn x:Name="observationColumn" Binding="{Binding Path=Observation}" Header="Observation" Width="Auto" />
+				<!--<DataGridTextColumn x:Name="tilecolColumn" Binding="{Binding Path=Tilecol}" Header="Tilecol" Width="SizeToHeader" />
+				<DataGridTextColumn x:Name="tilerowColumn" Binding="{Binding Path=Tilerow}" Header="Tilerow" Width="SizeToHeader" />-->
 			</DataGrid.Columns>
 		</DataGrid>
-        <ProgressBar Height="10" HorizontalAlignment="Left" Margin="0,301,0,0" Name="progressBar1" VerticalAlignment="Top" Width="503" />
+        <ProgressBar Height="10" HorizontalAlignment="Stretch" Margin="0,301,0,0" Name="progressBar1" VerticalAlignment="Bottom" Width="Auto" />
         <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox1_SelectionChanged" />
     </Grid>
 </Window>
