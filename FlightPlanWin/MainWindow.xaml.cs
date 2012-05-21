@@ -26,10 +26,24 @@ namespace FlightPlanWin
 		private FlightPlanContext _context = new FlightPlanContext();
         private readonly BackgroundWorker worker = new BackgroundWorker();
 		private CollectionViewSource airfieldViewSource;
+		private List<ColourState> colourStates = new List<ColourState>();
+		
+
 		public MainWindow()
 		{
 			InitializeComponent();
             InitializeBackgroundWorker();
+			InitializeColourStates();
+		}
+
+		private void InitializeColourStates()
+		{
+			this.colourStates.Add(new ColourState(Colors.Red, "RED", 0, 0));
+			this.colourStates.Add(new ColourState(Colors.Orange, "AMB", 800, 200));
+			this.colourStates.Add(new ColourState(Colors.Yellow, "YLO", 1600, 300));
+			this.colourStates.Add(new ColourState(Colors.Green, "GRN", 3700, 700));
+			this.colourStates.Add(new ColourState(Colors.White, "WHT", 5000, 1500));
+			this.colourStates.Add(new ColourState(Colors.Blue, "BLU", 8000, 2500));
 		}
 
         private void InitializeBackgroundWorker()
@@ -94,7 +108,11 @@ namespace FlightPlanWin
 				double percentage = Math.Floor((double)(((double)counter / (double)airfieldsCount) * 100));
 				Console.WriteLine("{0}/{1}*100=~{2}", counter, airfieldsCount, (int)percentage);
 				worker.ReportProgress((int)percentage);
-                af.Observation = Utility.getObservation(af.ICAO);
+				Observation ob = new Observation(af.ICAO, this.colourStates);
+				af.Observation = ob.Metar;
+				af.ColourState = ob.ColourState.Abbreviation.ToString();
+				af.Cloudbase = ob.Cloudbase.ToString();
+				af.Visibility = ob.Visibility.ToString();
                 counter++;
             }
 

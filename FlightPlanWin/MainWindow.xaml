@@ -1,7 +1,7 @@
 ﻿<Window x:Class="FlightPlanWin.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="FlightPlanWin" Height="350" Width="525" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:my="clr-namespace:FlightPlanModel;assembly=FlightPlanModel" Loaded="Window_Loaded" VerticalAlignment="Top">
+        Title="FlightPlanWin" Height="442" Width="649" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:my="clr-namespace:FlightPlanModel;assembly=FlightPlanModel" Loaded="Window_Loaded" VerticalAlignment="Top" Icon="/FlightPlanWin;component/Images/ic_launcher.png">
 	<Window.Resources>
 		<CollectionViewSource x:Key="airfieldViewSource" d:DesignSource="{d:DesignInstance my:Airfield, CreateList=True}" />
 	</Window.Resources>
@@ -16,6 +16,7 @@
 				<DataGridTextColumn x:Name="longitudeColumn" Binding="{Binding Path=Longitude}" Header="Longitude" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="visibilityColumn" Binding="{Binding Path=Visibility}" Header="Visibility" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="cloudbaseColumn" Binding="{Binding Path=Cloudbase}" Header="Cloudbase" Width="SizeToHeader" />
+				<DataGridTextColumn x:Name="colourStateColumn" Binding="{Binding Path=ColourState}" Header="ColourState" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="observationColumn" Binding="{Binding Path=Observation}" Header="Observation" Width="Auto" />
 				<!--<DataGridTextColumn x:Name="tilecolColumn" Binding="{Binding Path=Tilecol}" Header="Tilecol" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="tilerowColumn" Binding="{Binding Path=Tilerow}" Header="Tilerow" Width="SizeToHeader" />-->

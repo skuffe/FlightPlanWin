@@ -22,5 +22,7 @@ namespace FlightPlanModel
 		public string Visibility { get; set; }
 		[NotMappedAttribute]
 		public string Cloudbase { get; set; }
+		[NotMappedAttribute]
+		public string ColourState { get; set; }
 	}
 }
