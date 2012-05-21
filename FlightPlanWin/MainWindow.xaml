@@ -14,6 +14,8 @@
 				<DataGridTextColumn x:Name="iCAOColumn" Binding="{Binding Path=ICAO}" Header="ICAO" Width="Auto" />
 				<DataGridTextColumn x:Name="latitudeColumn" Binding="{Binding Path=Latitude}" Header="Latitude" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="longitudeColumn" Binding="{Binding Path=Longitude}" Header="Longitude" Width="SizeToHeader" />
+				<DataGridTextColumn x:Name="visibilityColumn" Binding="{Binding Path=Visibility}" Header="Visibility" Width="SizeToHeader" />
+				<DataGridTextColumn x:Name="cloudbaseColumn" Binding="{Binding Path=Cloudbase}" Header="Cloudbase" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="observationColumn" Binding="{Binding Path=Observation}" Header="Observation" Width="Auto" />
 				<!--<DataGridTextColumn x:Name="tilecolColumn" Binding="{Binding Path=Tilecol}" Header="Tilecol" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="tilerowColumn" Binding="{Binding Path=Tilerow}" Header="Tilerow" Width="SizeToHeader" />-->

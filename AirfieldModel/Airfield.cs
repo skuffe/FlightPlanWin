@@ -18,5 +18,9 @@ namespace FlightPlanModel
 		public int Tilerow { get; set; }
 		[NotMappedAttribute]
 		public string Observation { get; set; }
+		[NotMappedAttribute]
+		public string Visibility { get; set; }
+		[NotMappedAttribute]
+		public string Cloudbase { get; set; }
 	}
 }
