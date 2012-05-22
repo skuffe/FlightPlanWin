@@ -113,24 +113,29 @@ namespace FlightPlanWin
 				double percentage = Math.Floor((double)(((double)counter / (double)airfieldsCount) * 100));
 				Console.WriteLine("{0}/{1}*100=~{2}", counter, airfieldsCount, (int)percentage);
 				worker.ReportProgress((int)percentage);
-				Observation ob = new Observation(af.ICAO, this.colourStates);
-				af.Observation = ob.Metar;
-				af.ColourState = ob.ColourState.Abbreviation.ToString();
-                if (!ob.Cloudbase.ToString().Equals("")) {
-                    af.Cloudbase = ob.Cloudbase.ToString() + " ft";
-                } else {
-                    af.Cloudbase = "N/A";
-                }
-                if (ob.Visibility.ToString().Equals("9999")) {
-                    af.Visibility = "> 10km";
-                } else if (!ob.Visibility.ToString().Equals("")) {
-                    af.Visibility = ob.Visibility.ToString() + " m";
-                } else {
-                    af.Visibility = "N/A";
-                }
-				af.ObservationAge = ob.ObservationAge;
-                af.isInvalid = ob.isInvalid;
-                counter++;
+				try {
+					Observation ob = new Observation(af.ICAO, this.colourStates);
+					af.Observation = ob.Metar;
+					af.ColourState = ob.ColourState.Abbreviation.ToString();
+					if (!ob.Cloudbase.ToString().Equals("")) {
+						af.Cloudbase = ob.Cloudbase.ToString() + " ft";
+					} else {
+						af.Cloudbase = "N/A";
+					}
+					if (ob.Visibility.ToString().Equals("9999")) {
+						af.Visibility = "> 10km";
+					} else if (!ob.Visibility.ToString().Equals("")) {
+						af.Visibility = ob.Visibility.ToString() + " m";
+					} else {
+						af.Visibility = "N/A";
+					}
+					af.ObservationAge = ob.ObservationAge;
+					af.isInvalid = ob.isInvalid;
+					counter++;
+				} catch (Exception ex) {
+					MessageBox.Show(ex.Message);
+					break;
+				}
             }
 
             e.Result = airfields;

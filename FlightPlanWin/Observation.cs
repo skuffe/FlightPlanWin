@@ -47,7 +47,8 @@ namespace FlightPlanWin
 				this.Metar = itemContent;
             }
             catch (Exception e) {
-                Console.WriteLine(e.Message.ToString());
+                //Console.WriteLine(e.Message.ToString());
+				throw new Exception("shit");
             }            
         }
 
