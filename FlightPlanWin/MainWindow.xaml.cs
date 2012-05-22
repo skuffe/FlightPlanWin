@@ -115,8 +115,18 @@ namespace FlightPlanWin
 				Observation ob = new Observation(af.ICAO, this.colourStates);
 				af.Observation = ob.Metar;
 				af.ColourState = ob.ColourState.Abbreviation.ToString();
-				af.Cloudbase = ob.Cloudbase.ToString();
-				af.Visibility = ob.Visibility.ToString();
+                if (!ob.Cloudbase.ToString().Equals("")) {
+                    af.Cloudbase = ob.Cloudbase.ToString() + " ft";
+                } else {
+                    af.Cloudbase = "N/A";
+                }
+                if (ob.Visibility.ToString().Equals("9999")) {
+                    af.Visibility = "> 10km";
+                } else if (!ob.Visibility.ToString().Equals("")) {
+                    af.Visibility = ob.Visibility.ToString() + " m";
+                } else {
+                    af.Visibility = "N/A";
+                }
 				af.ObservationAge = ob.ObservationAge;
                 af.isInvalid = ob.isInvalid;
                 counter++;

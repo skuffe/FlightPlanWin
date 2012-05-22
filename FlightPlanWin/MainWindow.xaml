@@ -13,8 +13,8 @@
 				<DataGridTextColumn x:Name="iCAOColumn" Binding="{Binding Path=ICAO}" Header="ICAO" Width="Auto" />
 				<DataGridTextColumn x:Name="latitudeColumn" Binding="{Binding Path=Latitude}" Header="Latitude" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="longitudeColumn" Binding="{Binding Path=Longitude}" Header="Longitude" Width="SizeToHeader" />
-				<DataGridTextColumn x:Name="visibilityColumn" Binding="{Binding Path=Visibility}" Header="Visibility" Width="SizeToHeader" />
-				<DataGridTextColumn x:Name="cloudbaseColumn" Binding="{Binding Path=Cloudbase}" Header="Cloudbase" Width="SizeToHeader" />
+				<DataGridTextColumn x:Name="visibilityColumn" Binding="{Binding Path=Visibility}" Header="Visibility" Width="Auto" />
+				<DataGridTextColumn x:Name="cloudbaseColumn" Binding="{Binding Path=Cloudbase}" Header="Cloudbase" Width="Auto" />
 				<DataGridTextColumn x:Name="colourStateColumn" Binding="{Binding Path=ColourState}" Header="ColourState" Width="SizeToHeader">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
