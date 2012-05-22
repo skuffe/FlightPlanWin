@@ -65,9 +65,15 @@ namespace FlightPlanWin
 			if (match.Success) {
 				this.Visibility = int.Parse(match.Groups[1].Value.Trim());
 			} else {
-				match = Regex.Match(this.Metar, @"([0-9]{1,2})(?:SM)");
+				match = Regex.Match(this.Metar, @"([0-9]{1,2})(?:SM)|([0-9])/([0-9])(?=SM)");
 				if (match.Success) {
-					this.Visibility = ((int)(Double.Parse(match.Groups[1].Value.Trim()) * (double)1609.3));
+					if (match.Groups[1].Value == "") {
+						double first = double.Parse(match.Groups[2].Value);
+						double second = double.Parse(match.Groups[3].Value);
+						this.Visibility = ((int)(first/second * (double)1609.3));
+					} else {
+						this.Visibility = ((int)(Double.Parse(match.Groups[1].Value.Trim()) * (double)1609.3));
+					}
 				}
 			}
 
