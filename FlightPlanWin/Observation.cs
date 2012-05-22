@@ -18,6 +18,7 @@ namespace FlightPlanWin
 		public ColourState ColourState { get; set; }
 		public List<ColourState> ColourStates { get; set; }
 		public string ObservationAge { get; set; }
+        public bool isInvalid { get; set; }
 
 		public Observation(String ICAO, List<ColourState> ColourStates)
 		{
@@ -63,7 +64,10 @@ namespace FlightPlanWin
 				DateTime convertedDate = DateTime.SpecifyKind(DateTime.ParseExact(dateStr, dateFormat, CultureInfo.InvariantCulture), DateTimeKind.Utc);
 				DateTime now = DateTime.Now;
 				TimeSpan age = now - convertedDate.ToLocalTime();
-				this.ObservationAge = String.Format("{0}h {1}m", age.Hours, age.Minutes);
+				this.ObservationAge = String.Format("{0}h {1}m", (int)age.TotalHours, age.Minutes);
+                if (age.TotalHours > 1)  {
+                    this.isInvalid = true;
+                }
 			}
 			/**
 			 * CAVOK

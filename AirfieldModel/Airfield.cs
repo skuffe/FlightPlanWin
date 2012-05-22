@@ -26,5 +26,7 @@ namespace FlightPlanModel
 		public string ColourState { get; set; }
 		[NotMappedAttribute]
 		public string ObservationAge { get; set; }
+        [NotMappedAttribute]
+        public bool isInvalid { get; set; }
 	}
 }
