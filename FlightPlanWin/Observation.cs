@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
+using System.Globalization;
 
 namespace FlightPlanWin
 {
@@ -16,11 +17,13 @@ namespace FlightPlanWin
 		public string ICAO { get; set; }
 		public ColourState ColourState { get; set; }
 		public List<ColourState> ColourStates { get; set; }
+		public string ObservationAge { get; set; }
 
 		public Observation(String ICAO, List<ColourState> ColourStates)
 		{
 			this.ICAO = ICAO;
 			this.ColourStates = ColourStates;
+			this.ObservationAge = "N/A";
 			this.getObservation();
 			this.parseObservation();
 		}
@@ -50,6 +53,18 @@ namespace FlightPlanWin
 		public void parseObservation()
 		{
 			Match match;
+			match = Regex.Match(this.Metar, @"([0-9]{2})([0-9]{2})([0-9]{2})Z");
+			if (match.Success) {
+				string dateFormat = "yyyy-M-dd HH:mm";
+			//	Console.WriteLine();
+			//	Console.WriteLine(dateFormat);
+				string dateStr = DateTime.UtcNow.Year + "-" + DateTime.UtcNow.Month + "-" + match.Groups[1] + " " + match.Groups[2] + ":" + match.Groups[3];
+			//	Console.WriteLine(dateStr);
+				DateTime convertedDate = DateTime.SpecifyKind(DateTime.ParseExact(dateStr, dateFormat, CultureInfo.InvariantCulture), DateTimeKind.Utc);
+				DateTime now = DateTime.Now;
+				TimeSpan age = now - convertedDate.ToLocalTime();
+				this.ObservationAge = String.Format("{0}h {1}m", age.Hours, age.Minutes);
+			}
 			/**
 			 * CAVOK
 			 */

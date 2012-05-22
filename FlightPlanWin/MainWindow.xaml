@@ -48,6 +48,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
+				<DataGridTextColumn x:Name="observationAgeColumn" Binding="{Binding Path=ObservationAge}" Header="Observation Age" Width="Auto" />
                 <DataGridTextColumn x:Name="observationColumn" Binding="{Binding Path=Observation}" Header="Observation" Width="Auto" MinWidth="600" />
 				<!--<DataGridTextColumn x:Name="tilecolColumn" Binding="{Binding Path=Tilecol}" Header="Tilecol" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="tilerowColumn" Binding="{Binding Path=Tilerow}" Header="Tilerow" Width="SizeToHeader" />-->

@@ -24,5 +24,7 @@ namespace FlightPlanModel
 		public string Cloudbase { get; set; }
 		[NotMappedAttribute]
 		public string ColourState { get; set; }
+		[NotMappedAttribute]
+		public string ObservationAge { get; set; }
 	}
 }

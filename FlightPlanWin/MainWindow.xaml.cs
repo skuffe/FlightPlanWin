@@ -113,6 +113,7 @@ namespace FlightPlanWin
 				af.ColourState = ob.ColourState.Abbreviation.ToString();
 				af.Cloudbase = ob.Cloudbase.ToString();
 				af.Visibility = ob.Visibility.ToString();
+				af.ObservationAge = ob.ObservationAge;
                 counter++;
             }
 
