@@ -76,9 +76,17 @@ namespace FlightPlanWin
 
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!worker.IsBusy) {
+            SelectionChangedHandler();
+        }
+
+        private void SelectionChangedHandler()
+        {
+            if (!worker.IsBusy)
+            {
                 worker.RunWorkerAsync(comboBox1.SelectedItem.ToString());
-            } else {
+            }
+            else
+            {
                 MessageBox.Show("Please wait while the fetcher finishes");
             }
         }
@@ -94,7 +102,6 @@ namespace FlightPlanWin
             // to the Result property of the DoWorkEventArgs
             // object. This is will be available to the 
             // RunWorkerCompleted eventhandler.
-            // e.Result = ComputeFibonacci((int)e.Argument, worker, e);
             string selectedValue = (string)e.Argument;
             
             var airfields = (from a in _context.Airfields
@@ -148,6 +155,11 @@ namespace FlightPlanWin
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar1.Value = e.ProgressPercentage;
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            SelectionChangedHandler();
         }
 	}
 }

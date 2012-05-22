@@ -67,5 +67,6 @@
 		</DataGrid>
         <ProgressBar Height="10" HorizontalAlignment="Stretch" Margin="0,301,0,0" Name="progressBar1" VerticalAlignment="Bottom" Width="Auto" />
         <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox1_SelectionChanged" />
+        <Button Content="Refresh" Height="23" HorizontalAlignment="Left" Margin="126,0,0,0" Name="btnRefresh" VerticalAlignment="Top" Width="75" Click="btnRefresh_Click" />
     </Grid>
 </Window>
