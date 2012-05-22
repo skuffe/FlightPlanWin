@@ -33,7 +33,7 @@ namespace FlightPlanWin
         {
             try {
                 string itemContent = "";
-                String URLString = "http://api.geonames.org/weatherIcao?ICAO=" + this.ICAO + "&username=skuffe";
+                String URLString = "http://api.geonames.org/weatherIcao?ICAO=" + this.ICAO + "&username=mercantec";
                 XmlTextReader reader = new XmlTextReader(URLString);
 
                 while (reader.Read()) {

@@ -82,6 +82,7 @@ namespace FlightPlanWin
         private void SelectionChangedHandler()
         {
             if (!worker.IsBusy) {
+                statusLabel.Content = "Fetching data, please wait...";
                 worker.RunWorkerAsync(comboBox1.SelectedItem.ToString());
             } else {
                 MessageBox.Show("Please wait while the fetcher finishes");
@@ -155,6 +156,7 @@ namespace FlightPlanWin
                 // Finally, handle the case where the operation 
                 // succeeded.
                 this.airfieldViewSource.Source = (List<Airfield>)e.Result;
+                statusLabel.Content = "";
             }
         }
 

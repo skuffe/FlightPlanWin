@@ -6,7 +6,7 @@
 		<CollectionViewSource x:Key="airfieldViewSource" d:DesignSource="{d:DesignInstance my:Airfield, CreateList=True}" />
 	</Window.Resources>
 	<Grid DataContext="{StaticResource airfieldViewSource}">
-		<DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True" HorizontalAlignment="Stretch" ItemsSource="{Binding}" Name="airfieldDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalAlignment="Stretch" Width="Auto" Margin="0,29,0,12" IsReadOnly="True">
+		<DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True" HorizontalAlignment="Stretch" ItemsSource="{Binding}" Name="airfieldDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalAlignment="Stretch" Width="Auto" Margin="0,23,0,0" IsReadOnly="True">
 			<DataGrid.Columns>
 				<DataGridTextColumn x:Name="countryColumn" Binding="{Binding Path=Country}" Header="Country" Width="Auto" />
 				<DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=Name}" Header="Name" Width="Auto" />
@@ -64,8 +64,9 @@
 				<DataGridTextColumn x:Name="tilerowColumn" Binding="{Binding Path=Tilerow}" Header="Tilerow" Width="SizeToHeader" />-->
 			</DataGrid.Columns>
 		</DataGrid>
-        <ProgressBar Height="10" HorizontalAlignment="Stretch" Margin="0,301,0,0" Name="progressBar1" VerticalAlignment="Bottom" Width="Auto" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="221" SelectionChanged="comboBox1_SelectionChanged" />
+        <ProgressBar Height="23" HorizontalAlignment="Stretch" Name="progressBar1" VerticalAlignment="Top" Width="Auto" Margin="302,0,0,0" />
+        <Label Height="23" Name="statusLabel" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="10" Margin="301,0,0,0" Width="Auto" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="227" SelectionChanged="comboBox1_SelectionChanged" />
         <Button Content="Refresh" Height="23" HorizontalAlignment="Left" Margin="227,0,0,0" Name="btnRefresh" VerticalAlignment="Top" Width="75" Click="btnRefresh_Click" />
     </Grid>
 </Window>
