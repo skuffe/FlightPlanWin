@@ -8,14 +8,12 @@ namespace FlightPlanWin
 {
 	class ColourState
 	{
-		public Color Colour { get; set; }
 		public string Abbreviation { get; set; }
 		public int Visibility { get; set; }
 		public int Cloudbase { get; set; }
 
-		public ColourState(Color Colour, string Abbreviation, int Visibility, int Cloudbase)
+		public ColourState(string Abbreviation, int Visibility, int Cloudbase)
 		{
-			this.Colour = Colour;
 			this.Abbreviation = Abbreviation;
 			this.Visibility = Visibility;
 			this.Cloudbase = Cloudbase;

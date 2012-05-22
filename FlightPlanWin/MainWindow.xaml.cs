@@ -38,12 +38,12 @@ namespace FlightPlanWin
 
 		private void InitializeColourStates()
 		{
-			this.colourStates.Add(new ColourState(Colors.Red, "RED", 0, 0));
-			this.colourStates.Add(new ColourState(Colors.Orange, "AMB", 800, 200));
-			this.colourStates.Add(new ColourState(Colors.Yellow, "YLO", 1600, 300));
-			this.colourStates.Add(new ColourState(Colors.Green, "GRN", 3700, 700));
-			this.colourStates.Add(new ColourState(Colors.White, "WHT", 5000, 1500));
-			this.colourStates.Add(new ColourState(Colors.Blue, "BLU", 8000, 2500));
+			this.colourStates.Add(new ColourState("RED", 0, 0));
+			this.colourStates.Add(new ColourState("AMB", 800, 200));
+			this.colourStates.Add(new ColourState("YLO", 1600, 300));
+			this.colourStates.Add(new ColourState("GRN", 3700, 700));
+			this.colourStates.Add(new ColourState("WHT", 5000, 1500));
+			this.colourStates.Add(new ColourState("BLU", 8000, 2500));
 		}
 
         private void InitializeBackgroundWorker()

@@ -87,7 +87,7 @@ namespace FlightPlanWin
 			 * Determine colour state
 			 */
 			if (this.Metar.Contains("no observation found")) {
-				this.ColourState = new ColourState(Colors.White, "N/A", 0, 0);
+				this.ColourState = new ColourState("N/A", 0, 0);
 			} else if (!this.Metar.Contains("no observation found") && this.Visibility == null && this.Cloudbase == null) {
 				this.ColourState = this.ColourStates[this.ColourStates.Count-1];
 			} else {
