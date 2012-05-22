@@ -8,7 +8,6 @@
 	<Grid DataContext="{StaticResource airfieldViewSource}">
 		<DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True" HorizontalAlignment="Stretch" ItemsSource="{Binding}" Name="airfieldDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalAlignment="Stretch" Width="Auto" Margin="0,29,0,12" IsReadOnly="True">
 			<DataGrid.Columns>
-				<!--<DataGridTextColumn x:Name="airfieldIDColumn" Binding="{Binding Path=AirfieldID}" Header="Airfield ID" Width="SizeToHeader" />-->
 				<DataGridTextColumn x:Name="countryColumn" Binding="{Binding Path=Country}" Header="Country" Width="Auto" />
 				<DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=Name}" Header="Name" Width="Auto" />
 				<DataGridTextColumn x:Name="iCAOColumn" Binding="{Binding Path=ICAO}" Header="ICAO" Width="Auto" />
@@ -66,7 +65,7 @@
 			</DataGrid.Columns>
 		</DataGrid>
         <ProgressBar Height="10" HorizontalAlignment="Stretch" Margin="0,301,0,0" Name="progressBar1" VerticalAlignment="Bottom" Width="Auto" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox1_SelectionChanged" />
-        <Button Content="Refresh" Height="23" HorizontalAlignment="Left" Margin="126,0,0,0" Name="btnRefresh" VerticalAlignment="Top" Width="75" Click="btnRefresh_Click" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="221" SelectionChanged="comboBox1_SelectionChanged" />
+        <Button Content="Refresh" Height="23" HorizontalAlignment="Left" Margin="227,0,0,0" Name="btnRefresh" VerticalAlignment="Top" Width="75" Click="btnRefresh_Click" />
     </Grid>
 </Window>

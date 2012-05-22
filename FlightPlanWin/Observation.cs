@@ -57,10 +57,7 @@ namespace FlightPlanWin
 			match = Regex.Match(this.Metar, @"([0-9]{2})([0-9]{2})([0-9]{2})Z");
 			if (match.Success) {
 				string dateFormat = "yyyy-M-dd HH:mm";
-			//	Console.WriteLine();
-			//	Console.WriteLine(dateFormat);
 				string dateStr = DateTime.UtcNow.Year + "-" + DateTime.UtcNow.Month + "-" + match.Groups[1] + " " + match.Groups[2] + ":" + match.Groups[3];
-			//	Console.WriteLine(dateStr);
 				DateTime convertedDate = DateTime.SpecifyKind(DateTime.ParseExact(dateStr, dateFormat, CultureInfo.InvariantCulture), DateTimeKind.Utc);
 				DateTime now = DateTime.Now;
 				TimeSpan age = now - convertedDate.ToLocalTime();
