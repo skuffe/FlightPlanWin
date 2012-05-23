@@ -111,7 +111,7 @@ namespace FlightPlanWin
                     } else {
                         af.Cloudbase = "N/A";
                     }
-                    if (ob.Visibility.ToString().Equals("9999")) {
+                    if (ob.Visibility >= 9999) {
                         af.Visibility = "> 10km";
                     } else if (!ob.Visibility.ToString().Equals("")) {
                         af.Visibility = ob.Visibility.ToString() + " m";
