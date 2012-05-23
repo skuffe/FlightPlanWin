@@ -109,37 +109,30 @@ namespace FlightPlanWin
             int airfieldsCount = airfields.Count;
             int counter = 1;
 
-			try {
-				foreach (Airfield af in airfields) {
-					double percentage = Math.Floor((double)(((double)counter / (double)airfieldsCount) * 100));
-					Console.WriteLine("{0}/{1}*100=~{2}", counter, airfieldsCount, (int)percentage);
-					worker.ReportProgress((int)percentage);
-					Observation ob = new Observation(af.ICAO, this.colourStates);
-					af.Observation = ob.Metar;
-					af.ColourState = ob.ColourState.Abbreviation.ToString();
-					if (!ob.Cloudbase.ToString().Equals("")) {
-						af.Cloudbase = ob.Cloudbase.ToString() + " ft";
-					} else {
-						af.Cloudbase = "N/A";
-					}
-					if (ob.Visibility.ToString().Equals("9999")) {
-						af.Visibility = "> 10km";
-					} else if (!ob.Visibility.ToString().Equals("")) {
-						af.Visibility = ob.Visibility.ToString() + " m";
-					} else {
-						af.Visibility = "N/A";
-					}
-					af.ObservationAge = ob.ObservationAge;
-					af.isInvalid = ob.isInvalid;
-					counter++;
+			foreach (Airfield af in airfields) {
+				double percentage = Math.Floor((double)(((double)counter / (double)airfieldsCount) * 100));
+				Console.WriteLine("{0}/{1}*100=~{2}", counter, airfieldsCount, (int)percentage);
+				worker.ReportProgress((int)percentage);
+				Observation ob = new Observation(af.ICAO, this.colourStates);
+				af.Observation = ob.Metar;
+				af.ColourState = ob.ColourState.Abbreviation.ToString();
+				if (!ob.Cloudbase.ToString().Equals("")) {
+					af.Cloudbase = ob.Cloudbase.ToString() + " ft";
+				} else {
+					af.Cloudbase = "N/A";
 				}
-
-				e.Result = airfields;
-			} catch (Exception ex) {
-				//throw new Exception(ex.Message);
-				Console.WriteLine(ex.Message);
+				if (ob.Visibility.ToString().Equals("9999")) {
+					af.Visibility = "> 10km";
+				} else if (!ob.Visibility.ToString().Equals("")) {
+					af.Visibility = ob.Visibility.ToString() + " m";
+				} else {
+					af.Visibility = "N/A";
+				}
+				af.ObservationAge = ob.ObservationAge;
+				af.isInvalid = ob.isInvalid;
+				counter++;
 			}
-            
+                e.Result = airfields;
         }
 
         // This event handler deals with the results of the
@@ -148,7 +141,8 @@ namespace FlightPlanWin
         {
             // First, handle the case where an exception was thrown.
             if (e.Error != null) {
-                MessageBox.Show(e.Error.Message);
+                statusLabel.Content = e.Error.Message;
+                progressBar1.Value = 0;
             } else if (e.Cancelled) {
                 // Next, handle the case where the user canceled 
                 // the operation.
