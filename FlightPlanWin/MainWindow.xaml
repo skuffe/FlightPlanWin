@@ -69,5 +69,5 @@
         <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="227" SelectionChanged="comboBox1_SelectionChanged" />
         <Button Content="Refresh" Height="23" HorizontalAlignment="Left" Margin="227,0,0,0" Name="btnRefresh" VerticalAlignment="Top" Width="75" Click="btnRefresh_Click" />
         <Button Content="Stop" Height="23" HorizontalAlignment="Left" Margin="302,0,0,0" Name="btnStop" VerticalAlignment="Top" Width="75" Click="btnStop_Click" />
-    </Grid>
+	</Grid>
 </Window>
