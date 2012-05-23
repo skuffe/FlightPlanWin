@@ -48,7 +48,7 @@ namespace FlightPlanWin
             }
             catch (Exception e) {
                 //Console.WriteLine(e.Message.ToString());
-				throw new Exception("shit");
+				throw new Exception(e.Message);
             }            
         }
 

@@ -109,11 +109,11 @@ namespace FlightPlanWin
             int airfieldsCount = airfields.Count;
             int counter = 1;
 
-            foreach (Airfield af in airfields) {
-				double percentage = Math.Floor((double)(((double)counter / (double)airfieldsCount) * 100));
-				Console.WriteLine("{0}/{1}*100=~{2}", counter, airfieldsCount, (int)percentage);
-				worker.ReportProgress((int)percentage);
-				try {
+			try {
+				foreach (Airfield af in airfields) {
+					double percentage = Math.Floor((double)(((double)counter / (double)airfieldsCount) * 100));
+					Console.WriteLine("{0}/{1}*100=~{2}", counter, airfieldsCount, (int)percentage);
+					worker.ReportProgress((int)percentage);
 					Observation ob = new Observation(af.ICAO, this.colourStates);
 					af.Observation = ob.Metar;
 					af.ColourState = ob.ColourState.Abbreviation.ToString();
@@ -132,13 +132,13 @@ namespace FlightPlanWin
 					af.ObservationAge = ob.ObservationAge;
 					af.isInvalid = ob.isInvalid;
 					counter++;
-				} catch (Exception ex) {
-					MessageBox.Show(ex.Message);
-					break;
 				}
-            }
 
-            e.Result = airfields;
+				e.Result = airfields;
+			} catch (Exception ex) {
+				//throw new Exception(ex.Message);
+				Console.WriteLine(ex.Message);
+			}
             
         }
 
@@ -156,6 +156,7 @@ namespace FlightPlanWin
                 // the DoWork event handler, the Cancelled
                 // flag may not have been set, even though
                 // CancelAsync was called.
+				MessageBox.Show("cancelled");
 
             } else {
                 // Finally, handle the case where the operation 
