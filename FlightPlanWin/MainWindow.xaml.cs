@@ -223,5 +223,27 @@ namespace FlightPlanWin
         {
             worker.CancelAsync();
         }
+
+		private void Print_Click(object sender, RoutedEventArgs e)
+		{
+//			PrintDialog printDlg = new PrintDialog();
+//			if ((bool)printDlg.ShowDialog().GetValueOrDefault()) {
+//				Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
+//				this.airfieldDataGrid.Measure(pageSize);
+//				this.airfieldDataGrid.Arrange(new Rect(5, 5, pageSize.Width, pageSize.Height));
+//				printDlg.PrintVisual(this.airfieldDataGrid, "Metar data for: " + this.comboBox1.SelectedItem.ToString());
+//			}
+			PrintDialog printDlg = new PrintDialog();
+			Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
+
+			List<string> columnHeaders = new List<string>();
+
+			foreach (DataGridColumn dg in this.airfieldDataGrid.Columns) {
+				columnHeaders.Add(dg.Header.ToString());
+			}
+
+			var paginator = new DocPaginator(this.airfieldDataGrid, pageSize, columnHeaders);
+			printDlg.PrintDocument(paginator, "patter");
+		}
 	}
 }
