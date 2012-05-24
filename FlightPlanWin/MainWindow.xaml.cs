@@ -226,39 +226,16 @@ namespace FlightPlanWin
         }
 
 		private void Print_Click(object sender, RoutedEventArgs e)
-		{
-
-/*			PrintDialog printDlg = new PrintDialog();
-			if ((bool)printDlg.ShowDialog().GetValueOrDefault()) {
-				Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
-				this.airfieldDataGrid.Measure(pageSize);
-				this.airfieldDataGrid.Arrange(new Rect(5, 5, pageSize.Width, pageSize.Height));
-				printDlg.PrintVisual(this.airfieldDataGrid, "Metar data for: " + this.comboBox1.SelectedItem.ToString());
-			}*/
-			/*
-			List<string> columns = new List<string>();
-			foreach (DataGridColumn column in this.airfieldDataGrid.Columns) {
-				Console.WriteLine(column.Header.ToString());
-			}
-
-			PrintDialog printDlg = new PrintDialog();
-			if ((bool)printDlg.ShowDialog().GetValueOrDefault()) {
-				Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
-				var paginator = new DocPaginator(this.airfieldDataGrid, pageSize, columns);
-				printDlg.PrintDocument(paginator, "noget");
-			}*/
-
-
-			
+		{			
 			PrintDialog printDlg = new PrintDialog();
 			printDlg.PrintTicket.PageOrientation = PageOrientation.Landscape;
 			if ((bool)printDlg.ShowDialog().GetValueOrDefault()) {
 				FlowDocument fd = new FlowDocument();
-				//fd.PageWidth = printDlg.PrintableAreaWidth;
-				//fd.PageHeight = printDlg.PrintableAreaHeight;
+				fd.PageWidth = printDlg.PrintableAreaWidth;
+				fd.PageHeight = printDlg.PrintableAreaHeight;
 				//fd.IsColumnWidthFlexible = true;
 				fd.ColumnWidth = printDlg.PrintableAreaWidth;
-			//	Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
+				Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
 				Table table = new Table();
 				
 				//int cols = 0;
