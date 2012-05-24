@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Documents;
 using System.Windows.Controls;
-using System.Diagnostics;
 using System.Windows;
+using System.Diagnostics;
 using System.Drawing;
+using System.Data.Entity;
+using FlightPlanModel;
 
 namespace FlightPlanWin
 {
@@ -124,14 +126,16 @@ namespace FlightPlanWin
 
 		private void CalculateFirstColumnWidth()
 		{
-			int maxDataLen = 0;
+			int maxDataLen = 25;
+			
+		//	for (int i = 0; i < _dataGrid.Items.Count; i++) {
+				//List<Object> icol = (List<Object>)_dataGrid.Items[i];
+				//Airfield icol = this._dataGrid.Items.Cast<Airfield>().ToList()[i];
 
-			for (int i = 0; i < _dataGrid.Items.Count; i++) {
-				List<Object> icol = (List<Object>)_dataGrid.Items[i];
-				var largestDataItem = (from d in icol
-									   select d != null ? d.ToString().Length : 0).Max();
-				maxDataLen = maxDataLen < largestDataItem ? largestDataItem : maxDataLen;
-			}
+			//	var largestDataItem = (from d in icol
+									//   select d != null ? d.ToString().Length : 0).Max();
+			//	maxDataLen = maxDataLen < largestDataItem ? largestDataItem : maxDataLen;
+			//}
 
 			string strDataLen = string.Join("a", new string[maxDataLen + 1]);
 

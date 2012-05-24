@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using FlightPlanModel;
 using System.ComponentModel;
 using System.Data;
+using System.Printing;
 
 namespace FlightPlanWin
 {
@@ -226,24 +227,81 @@ namespace FlightPlanWin
 
 		private void Print_Click(object sender, RoutedEventArgs e)
 		{
-//			PrintDialog printDlg = new PrintDialog();
-//			if ((bool)printDlg.ShowDialog().GetValueOrDefault()) {
-//				Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
-//				this.airfieldDataGrid.Measure(pageSize);
-//				this.airfieldDataGrid.Arrange(new Rect(5, 5, pageSize.Width, pageSize.Height));
-//				printDlg.PrintVisual(this.airfieldDataGrid, "Metar data for: " + this.comboBox1.SelectedItem.ToString());
-//			}
-			PrintDialog printDlg = new PrintDialog();
-			Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
 
-			List<string> columnHeaders = new List<string>();
-
-			foreach (DataGridColumn dg in this.airfieldDataGrid.Columns) {
-				columnHeaders.Add(dg.Header.ToString());
+/*			PrintDialog printDlg = new PrintDialog();
+			if ((bool)printDlg.ShowDialog().GetValueOrDefault()) {
+				Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
+				this.airfieldDataGrid.Measure(pageSize);
+				this.airfieldDataGrid.Arrange(new Rect(5, 5, pageSize.Width, pageSize.Height));
+				printDlg.PrintVisual(this.airfieldDataGrid, "Metar data for: " + this.comboBox1.SelectedItem.ToString());
+			}*/
+			/*
+			List<string> columns = new List<string>();
+			foreach (DataGridColumn column in this.airfieldDataGrid.Columns) {
+				Console.WriteLine(column.Header.ToString());
 			}
 
-			var paginator = new DocPaginator(this.airfieldDataGrid, pageSize, columnHeaders);
-			printDlg.PrintDocument(paginator, "patter");
+			PrintDialog printDlg = new PrintDialog();
+			if ((bool)printDlg.ShowDialog().GetValueOrDefault()) {
+				Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
+				var paginator = new DocPaginator(this.airfieldDataGrid, pageSize, columns);
+				printDlg.PrintDocument(paginator, "noget");
+			}*/
+
+
+			
+			PrintDialog printDlg = new PrintDialog();
+			printDlg.PrintTicket.PageOrientation = PageOrientation.Landscape;
+			if ((bool)printDlg.ShowDialog().GetValueOrDefault()) {
+				FlowDocument fd = new FlowDocument();
+				//fd.PageWidth = printDlg.PrintableAreaWidth;
+				//fd.PageHeight = printDlg.PrintableAreaHeight;
+				//fd.IsColumnWidthFlexible = true;
+				fd.ColumnWidth = printDlg.PrintableAreaWidth;
+			//	Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
+				Table table = new Table();
+				
+				//int cols = 0;
+				table.RowGroups.Add(new TableRowGroup());
+				//var gridLengthConverter = new GridLengthConverter();
+				for (int i=0; i<this.airfieldDataGrid.Columns.Count; i++) {
+				//foreach (DataGridColumn column in this.airfieldDataGrid.Columns) {
+					TableColumn newColumn = new TableColumn();
+				//	newColumn.Width = (GridLength)gridLengthConverter.ConvertFromString("Auto");
+					table.Columns.Add(newColumn);
+					table.RowGroups[0].Rows.Add(new TableRow());
+					table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[i].Header.ToString()))));
+				}
+
+
+				for (int h = 1; h < this.airfieldDataGrid.Items.Count; h++) {
+					table.RowGroups[0].Rows.Add(new TableRow());
+					//TableRow currentRow = table.RowGroups[0].Rows[h];
+					table.RowGroups[0].Rows[h].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Country))));
+					table.RowGroups[0].Rows[h].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Name))));
+					table.RowGroups[0].Rows[h].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).ICAO))));
+					table.RowGroups[0].Rows[h].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Latitude.ToString()))));
+					table.RowGroups[0].Rows[h].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Longitude.ToString()))));
+					table.RowGroups[0].Rows[h].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Visibility.ToString()))));
+					table.RowGroups[0].Rows[h].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Cloudbase.ToString()))));
+					table.RowGroups[0].Rows[h].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).ColourState))));
+					table.RowGroups[0].Rows[h].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).ObservationAge))));
+					table.RowGroups[0].Rows[h].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Observation))));
+					//table.RowGroups[0].Rows[h].Cells[0].is
+				}
+				fd.Blocks.Add(table);
+				
+				//foreach (object item in this.airfieldDataGrid.Items) {
+					//fd.Blocks.Add(new Column(new Run(item.ToString())));
+				//}
+				try {
+					DocumentPaginator paginator = ((IDocumentPaginatorSource)fd).DocumentPaginator;
+					//paginator.PageSize = pageSize;
+					printDlg.PrintDocument(paginator, "lort");
+				} catch (Exception ex) {
+					this.statusLabel.Content = ex.Message;
+				}
+			}
 		}
 	}
 }
