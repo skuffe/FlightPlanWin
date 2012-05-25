@@ -15,7 +15,7 @@
 				<DataGridTextColumn x:Name="longitudeColumn" Binding="{Binding Path=Longitude}" Header="Longitude" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="visibilityColumn" Binding="{Binding Path=Visibility}" Header="Visibility" Width="Auto" />
 				<DataGridTextColumn x:Name="cloudbaseColumn" Binding="{Binding Path=Cloudbase}" Header="Cloudbase" Width="Auto" />
-				<DataGridTextColumn x:Name="colourStateColumn" Binding="{Binding Path=ColourState}" Header="ColourState" Width="SizeToHeader">
+				<DataGridTextColumn x:Name="colourStateColumn" Binding="{Binding Path=ColourState}" Header="Colour" Width="SizeToHeader">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Style.Triggers>
@@ -47,7 +47,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn x:Name="observationAgeColumn" Binding="{Binding Path=ObservationAge}" Header="Observation Age" Width="Auto">
+                <DataGridTextColumn x:Name="observationAgeColumn" Binding="{Binding Path=ObservationAge}" Header="Age" Width="Auto">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Style.Triggers>
