@@ -18,6 +18,9 @@ namespace FlightPlanWin
     /// </summary>
     public partial class PrintPreview : Window
     {
+		/// <summary>
+		/// Interaction logic for PrintPreview.xaml
+		/// </summary>
         public IDocumentPaginatorSource Document
         {
             get { return viewer.Document; }

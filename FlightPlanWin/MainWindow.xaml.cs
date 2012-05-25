@@ -32,6 +32,7 @@ namespace FlightPlanWin
         private readonly BackgroundWorker worker	= new BackgroundWorker();
 		private CollectionViewSource airfieldViewSource;
 		private List<ColourState> colourStates		= new List<ColourState>();
+		private AboutBox aboutBox = new AboutBox();
 
 		private const int TABLE_COLUMNS = 7;		
 
@@ -183,7 +184,7 @@ namespace FlightPlanWin
 			// Return the processed list of airfields.
             e.Result = airfields;
         }
-
+		
 		///<summary>
 		///Event for when the actual work in the backgroundworker thread has completed.
 		///</summary>
@@ -372,5 +373,15 @@ namespace FlightPlanWin
                 this.statusLabel.Content = ex.Message;
             }
         }
+
+		private void About_Click(object sender, RoutedEventArgs e)
+		{
+			this.aboutBox.Show();			
+		}
+
+		private void Exit_Click(object sender, RoutedEventArgs e)
+		{
+			Application.Current.Shutdown();
+		}
 	}
 }

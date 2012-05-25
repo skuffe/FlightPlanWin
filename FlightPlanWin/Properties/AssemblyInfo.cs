@@ -8,7 +8,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("FlightPlanWin")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("By Danni Skov Høglund and Martin Mortensen")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("FlightPlanWin")]

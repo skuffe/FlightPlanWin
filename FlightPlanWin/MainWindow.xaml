@@ -74,10 +74,10 @@
 				<MenuItem Header="_Print" Click="Print_Click" />
 				<MenuItem Header="Print preview" Click="PrintPreview_Click" />
 				<Separator />
-				<MenuItem Header="E_xit" />
+				<MenuItem Header="E_xit" Click="Exit_Click" />
 			</MenuItem>
 			<MenuItem Header="_Help" >
-				<MenuItem Header="_About" />
+				<MenuItem Header="_About" Click="About_Click" />
 			</MenuItem>
 		</Menu>
 	</Grid>
