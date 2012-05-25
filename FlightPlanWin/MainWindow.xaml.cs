@@ -16,6 +16,9 @@ using FlightPlanModel;
 using System.ComponentModel;
 using System.Data;
 using System.Printing;
+using System.Windows.Xps.Packaging;
+using System.IO;
+using System.Windows.Xps;
 
 namespace FlightPlanWin
 {
@@ -30,8 +33,7 @@ namespace FlightPlanWin
 		private CollectionViewSource airfieldViewSource;
 		private List<ColourState> colourStates		= new List<ColourState>();
 
-		private const int TABLE_COLUMNS = 7;
-		
+		private const int TABLE_COLUMNS = 7;		
 
 		///<summary>
 		///Constructor
@@ -227,102 +229,148 @@ namespace FlightPlanWin
             worker.CancelAsync();
         }
 
-		private void Print_Click(object sender, RoutedEventArgs e)
-		{			
-			PrintDialog printDlg = new PrintDialog();
-			printDlg.PrintTicket.PageOrientation = PageOrientation.Landscape;
-			if ((bool)printDlg.ShowDialog().GetValueOrDefault()) {
-				FlowDocument fd = new FlowDocument();
-				fd.PageWidth = printDlg.PrintableAreaWidth;
-				fd.PageHeight = printDlg.PrintableAreaHeight;
-				fd.IsColumnWidthFlexible = false;
-				fd.ColumnWidth = printDlg.PrintableAreaWidth;
-				fd.FontSize = 10;
-				Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
-				fd.Blocks.Add(new Paragraph(new Run("Observations for " + this.comboBox1.SelectedItem.ToString() + " - " + DateTime.Now.ToString() + " (local time)")));
-				Table table = new Table();
+        private FlowDocument CreateDocument(PrintDialog printDlg)
+        {
+            FlowDocument fd = new FlowDocument();
+            fd.PageWidth = printDlg.PrintableAreaWidth;
+            fd.PageHeight = printDlg.PrintableAreaHeight;
+            fd.IsColumnWidthFlexible = false;
+            fd.ColumnWidth = printDlg.PrintableAreaWidth;
+            fd.FontSize = 10;
+            Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
 
-				table.RowGroups.Add(new TableRowGroup());
+            fd.Blocks.Add(new Paragraph(new Run("Observations for " + this.comboBox1.SelectedItem.ToString() + " - " + DateTime.Now.ToString() + " (local time)")));
+            Table table = new Table();
 
-				for (int i = 0; i < TABLE_COLUMNS; i++)
-					table.Columns.Add(new TableColumn());
+            table.RowGroups.Add(new TableRowGroup());
 
-				table.Columns[0].Width = new GridLength(300);
-				for (int i = 1; i < TABLE_COLUMNS - 1; i++)
-					table.Columns[i].Width = new GridLength(55);
+            for (int i = 0; i < TABLE_COLUMNS; i++)
+                table.Columns.Add(new TableColumn());
+
+            table.Columns[0].Width = new GridLength(300);
+            for (int i = 1; i < TABLE_COLUMNS - 1; i++)
+                table.Columns[i].Width = new GridLength(55);
 
 
-				TableRow headerRow = new TableRow();
-				headerRow.Background = Brushes.SkyBlue;
-				headerRow.FontWeight = FontWeights.Bold;
-				table.RowGroups[0].Rows.Add(headerRow);
-				// Name
-				table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[1].Header.ToString()))));
-				// ICAO
-				table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[2].Header.ToString()))));
-				// Visibility
-				table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[5].Header.ToString()))));
-				// Cloudbase
-				table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[6].Header.ToString()))));
-				// Colour State
-				table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[7].Header.ToString()))));
-				// Observation Age
-				table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[8].Header.ToString()))));
-				// Observation
-				table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[9].Header.ToString()))));
+            TableRow headerRow = new TableRow();
+            headerRow.Background = Brushes.SkyBlue;
+            headerRow.FontWeight = FontWeights.Bold;
+            table.RowGroups[0].Rows.Add(headerRow);
+            // Name
+            table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[1].Header.ToString()))));
+            // ICAO
+            table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[2].Header.ToString()))));
+            // Visibility
+            table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[5].Header.ToString()))));
+            // Cloudbase
+            table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[6].Header.ToString()))));
+            // Colour State
+            table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[7].Header.ToString()))));
+            // Observation Age
+            table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[8].Header.ToString()))));
+            // Observation
+            table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[9].Header.ToString()))));
 
 
-				for (int h = 0; h < this.airfieldDataGrid.Items.Count; h++) {
-					TableRow tr = new TableRow();
-					if (h % 2 != 0)
-						tr.Background = Brushes.Beige;
-					table.RowGroups[0].Rows.Add(tr);
-					table.RowGroups[0].Rows[h+1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Name))));
-					table.RowGroups[0].Rows[h+1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).ICAO))));
-					table.RowGroups[0].Rows[h+1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Visibility.ToString()))));
-					table.RowGroups[0].Rows[h+1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Cloudbase.ToString()))));
-					TableCell tc_ColourState = new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).ColourState)));
-					switch ((string)((Airfield)this.airfieldDataGrid.Items[h]).ColourState) {
-						case "BLU":
-							tc_ColourState.Background = Brushes.Blue;
-							tc_ColourState.Foreground = Brushes.White;
-							break;
-						case "WHT":
-							tc_ColourState.Background = Brushes.White;
-							break;
-						case "GRN":
-							tc_ColourState.Background = Brushes.Green;
-							tc_ColourState.Foreground = Brushes.White;
-							break;
-						case "YLO":
-							tc_ColourState.Background = Brushes.Yellow;
-							break;
-						case "AMB":
-							tc_ColourState.Background = Brushes.Orange;
-							break;
-						case "RED":
-							tc_ColourState.Background = Brushes.Red;
-							tc_ColourState.Foreground = Brushes.White;
-							break;
-					}
-					table.RowGroups[0].Rows[h+1].Cells.Add(tc_ColourState);
-					TableCell tc_ObservationAge = new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).ObservationAge)));
-					if (((Airfield)this.airfieldDataGrid.Items[h]).isInvalid) {
-						tc_ObservationAge.Background = Brushes.Red;
-						tc_ObservationAge.Foreground = Brushes.White;
-					}
-					table.RowGroups[0].Rows[h + 1].Cells.Add(tc_ObservationAge);
-					table.RowGroups[0].Rows[h+1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Observation))));
-				}
-				fd.Blocks.Add(table);
-				
-				try {
-					DocumentPaginator paginator = ((IDocumentPaginatorSource)fd).DocumentPaginator;
-					printDlg.PrintDocument(paginator, "METAR - " + this.comboBox1.SelectedItem.ToString());
-				} catch (Exception ex) {
-					this.statusLabel.Content = ex.Message;
-				}
-			}
-		}
+            for (int h = 0; h < this.airfieldDataGrid.Items.Count; h++) {
+                TableRow tr = new TableRow();
+                if (h % 2 != 0)
+                    tr.Background = Brushes.Beige;
+                table.RowGroups[0].Rows.Add(tr);
+                table.RowGroups[0].Rows[h + 1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Name))));
+                table.RowGroups[0].Rows[h + 1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).ICAO))));
+                table.RowGroups[0].Rows[h + 1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Visibility.ToString()))));
+                table.RowGroups[0].Rows[h + 1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Cloudbase.ToString()))));
+                TableCell tc_ColourState = new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).ColourState)));
+                switch ((string)((Airfield)this.airfieldDataGrid.Items[h]).ColourState) {
+                    case "BLU":
+                        tc_ColourState.Background = Brushes.Blue;
+                        tc_ColourState.Foreground = Brushes.White;
+                        break;
+                    case "WHT":
+                        tc_ColourState.Background = Brushes.White;
+                        break;
+                    case "GRN":
+                        tc_ColourState.Background = Brushes.Green;
+                        tc_ColourState.Foreground = Brushes.White;
+                        break;
+                    case "YLO":
+                        tc_ColourState.Background = Brushes.Yellow;
+                        break;
+                    case "AMB":
+                        tc_ColourState.Background = Brushes.Orange;
+                        break;
+                    case "RED":
+                        tc_ColourState.Background = Brushes.Red;
+                        tc_ColourState.Foreground = Brushes.White;
+                        break;
+                }
+                table.RowGroups[0].Rows[h + 1].Cells.Add(tc_ColourState);
+                TableCell tc_ObservationAge = new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).ObservationAge)));
+                if (((Airfield)this.airfieldDataGrid.Items[h]).isInvalid) {
+                    tc_ObservationAge.Background = Brushes.Red;
+                    tc_ObservationAge.Foreground = Brushes.White;
+                }
+                table.RowGroups[0].Rows[h + 1].Cells.Add(tc_ObservationAge);
+                table.RowGroups[0].Rows[h + 1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Observation))));
+            }
+            fd.Blocks.Add(table);
+            return fd;
+        }
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.comboBox1.SelectedItem == null || worker.IsBusy == true || airfieldDataGrid.ItemsSource == null) {
+                statusLabel.Content = "Not ready to print, please fetch a list of airfields first";
+                return;
+            }
+
+            FlowDocument fd = null;
+            PrintDialog printDlg = new PrintDialog();
+            printDlg.PrintTicket.PageOrientation = PageOrientation.Landscape;
+            if ((bool)printDlg.ShowDialog().GetValueOrDefault()) {
+                fd = CreateDocument(printDlg);
+            }
+
+            try {
+                DocumentPaginator paginator = ((IDocumentPaginatorSource)fd).DocumentPaginator;
+                printDlg.PrintDocument(paginator, "METAR - " + this.comboBox1.SelectedItem.ToString());
+            } catch (Exception ex) {
+                this.statusLabel.Content = ex.Message;
+            }
+        }
+
+        private void PrintPreview_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.comboBox1.SelectedItem == null || worker.IsBusy == true || airfieldDataGrid.ItemsSource == null) {
+                statusLabel.Content = "Not ready to print, please fetch a list of airfields first";
+                return;
+            }
+
+            FlowDocument fd = null;
+            PrintDialog printDlg = new PrintDialog();
+            printDlg.PrintTicket.PageOrientation = PageOrientation.Landscape;
+            fd = CreateDocument(printDlg);
+
+            try {
+                DocumentPaginator paginator = ((IDocumentPaginatorSource)fd).DocumentPaginator;
+
+                string tempFileName = System.IO.Path.GetTempFileName();
+
+                File.Delete(tempFileName);
+                using (XpsDocument xpsDocument = new XpsDocument(tempFileName, FileAccess.ReadWrite)) {
+                    XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
+                    writer.Write(paginator);
+
+                    PrintPreview previewWindow = new PrintPreview {
+                        Owner = this,
+                        Document = xpsDocument.GetFixedDocumentSequence()
+                    };
+                    previewWindow.ShowDialog();
+                }
+            } catch (Exception ex) {
+                this.statusLabel.Content = ex.Message;
+            }
+        }
 	}
 }

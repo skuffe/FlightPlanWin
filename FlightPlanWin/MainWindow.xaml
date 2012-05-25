@@ -6,7 +6,7 @@
 		<CollectionViewSource x:Key="airfieldViewSource" d:DesignSource="{d:DesignInstance my:Airfield, CreateList=True}" />
 	</Window.Resources>
 	<Grid DataContext="{StaticResource airfieldViewSource}">
-		<DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True" HorizontalAlignment="Stretch" ItemsSource="{Binding}" Name="airfieldDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalAlignment="Stretch" Width="Auto" Margin="0,44,0,19" IsReadOnly="True">
+		<DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True" HorizontalAlignment="Stretch" ItemsSource="{Binding}" Name="airfieldDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalAlignment="Stretch" Width="Auto" Margin="0,47,0,0" IsReadOnly="True">
 			<DataGrid.Columns>
 				<DataGridTextColumn x:Name="countryColumn" Binding="{Binding Path=Country}" Header="Country" Width="Auto" />
 				<DataGridTextColumn x:Name="nameColumn" Binding="{Binding Path=Name}" Header="Name" Width="Auto" />
@@ -64,15 +64,15 @@
 				<DataGridTextColumn x:Name="tilerowColumn" Binding="{Binding Path=Tilerow}" Header="Tilerow" Width="SizeToHeader" />-->
 			</DataGrid.Columns>
 		</DataGrid>
-        <ProgressBar Height="23" HorizontalAlignment="Stretch" Name="progressBar1" VerticalAlignment="Top" Width="Auto" Margin="377,21,0,0" />
-        <Label Height="23" Name="statusLabel" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="10" Width="Auto" HorizontalAlignment="Stretch" Margin="377,21,1,0" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="227" SelectionChanged="comboBox1_SelectionChanged" Margin="0,21,0,0" />
-        <Button Content="Refresh" Height="23" HorizontalAlignment="Left" Margin="227,21,0,0" Name="btnRefresh" VerticalAlignment="Top" Width="75" Click="btnRefresh_Click" />
-        <Button Content="Stop" Height="23" HorizontalAlignment="Left" Margin="302,21,0,0" Name="btnStop" VerticalAlignment="Top" Width="75" Click="btnStop_Click" />
-		<Menu Height="23" HorizontalAlignment="Left" Name="menu1" VerticalAlignment="Top" Width="1140">
+        <ProgressBar Height="23" HorizontalAlignment="Stretch" Name="progressBar1" VerticalAlignment="Top" Width="Auto" Margin="377,24,0,0" />
+        <Label Height="23" Name="statusLabel" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" FontWeight="Bold" FontSize="10" Width="Auto" HorizontalAlignment="Center" Margin="377,24,0,0" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Top" Width="227" SelectionChanged="comboBox1_SelectionChanged" Margin="0,24,0,0" />
+        <Button Content="Refresh" Height="23" HorizontalAlignment="Left" Margin="227,24,0,0" Name="btnRefresh" VerticalAlignment="Top" Width="75" Click="btnRefresh_Click" />
+        <Button Content="Stop" Height="23" HorizontalAlignment="Left" Margin="302,24,0,0" Name="btnStop" VerticalAlignment="Top" Width="75" Click="btnStop_Click" />
+		<Menu Height="23" HorizontalAlignment="Stretch" Name="menu1" VerticalAlignment="Top" Width="Auto">
 			<MenuItem Header="_File" >
 				<MenuItem Header="_Print" Click="Print_Click" />
-				<MenuItem Header="Print preview" />
+				<MenuItem Header="Print preview" Click="PrintPreview_Click" />
 				<Separator />
 				<MenuItem Header="E_xit" />
 			</MenuItem>
