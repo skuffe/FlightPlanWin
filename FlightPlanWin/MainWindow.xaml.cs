@@ -28,13 +28,16 @@ namespace FlightPlanWin
 	public partial class MainWindow : Window
 	{
 		// Global variables
-		private FlightPlanContext _context			= new FlightPlanContext();
-        private readonly BackgroundWorker worker	= new BackgroundWorker();
-		private CollectionViewSource airfieldViewSource;
-		private List<ColourState> colourStates		= new List<ColourState>();
-		private AboutBox aboutBox = new AboutBox();
+		private FlightPlanContext _context = new FlightPlanContext();
+        private readonly BackgroundWorker _worker = new BackgroundWorker();
+		private CollectionViewSource _airfieldViewSource;
+		private List<ColourState> _colourStates = new List<ColourState>();
+		private AboutBox _aboutBox = new AboutBox();
+		private DateTime? _dataUpdated = null;
 
-		private const int TABLE_COLUMNS = 7;		
+		private const int TABLE_COLUMNS = 7;
+		private const string PRINT_FONT_FAMILY = "Calibri Verdana sans-serif";
+		private const int PRINT_FONT_SIZE = 10;
 
 		///<summary>
 		///Constructor
@@ -51,12 +54,12 @@ namespace FlightPlanWin
 		///</summary>
 		private void InitializeColourStates()
 		{
-			this.colourStates.Add(new ColourState("RED", 0, 0));
-			this.colourStates.Add(new ColourState("AMB", 800, 200));
-			this.colourStates.Add(new ColourState("YLO", 1600, 300));
-			this.colourStates.Add(new ColourState("GRN", 3700, 700));
-			this.colourStates.Add(new ColourState("WHT", 5000, 1500));
-			this.colourStates.Add(new ColourState("BLU", 8000, 2500));
+			this._colourStates.Add(new ColourState("RED", 0, 0));
+			this._colourStates.Add(new ColourState("AMB", 800, 200));
+			this._colourStates.Add(new ColourState("YLO", 1600, 300));
+			this._colourStates.Add(new ColourState("GRN", 3700, 700));
+			this._colourStates.Add(new ColourState("WHT", 5000, 1500));
+			this._colourStates.Add(new ColourState("BLU", 8000, 2500));
 		}
 
 		///<summary>
@@ -65,15 +68,15 @@ namespace FlightPlanWin
         private void InitializeBackgroundWorker()
         {
 			// Allow worker to report progress.
-            worker.WorkerReportsProgress = true;
+            _worker.WorkerReportsProgress = true;
 			// Allow cancellation of a running worker.
-            worker.WorkerSupportsCancellation = true;
+            _worker.WorkerSupportsCancellation = true;
 			// Add event handler for when RunWorkerAsync() is called - i.e. start of thread.
-            worker.DoWork += new DoWorkEventHandler(worker_DoWork);
+            _worker.DoWork += new DoWorkEventHandler(worker_DoWork);
 			// Add event handler for when the work has been completed.
-            worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
+            _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
 			// Add event handler for when a progress change occurs.
-            worker.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
+            _worker.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
         }
 		
 		///<summary>
@@ -83,7 +86,7 @@ namespace FlightPlanWin
 		{
 
 			// Initialize variable with viewsource defined in XAML for data binding.
-			this.airfieldViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("airfieldViewSource")));
+			this._airfieldViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("airfieldViewSource")));
 			// Fetch a list of countries from the database, and use the list for the combobox.
             this.comboBox1.ItemsSource = (from c in _context.Airfields
 										  orderby c.Country
@@ -112,9 +115,9 @@ namespace FlightPlanWin
 		///</summary>
         private void SelectionChangedHandler()
         {
-            if (!worker.IsBusy) {
+            if (!_worker.IsBusy) {
                 statusLabel.Content = "Fetching data, please wait...";
-                worker.RunWorkerAsync(comboBox1.SelectedItem.ToString());
+                _worker.RunWorkerAsync(comboBox1.SelectedItem.ToString());
             } else {
                 statusLabel.Content = "Please wait while the fetcher finishes...";
             }
@@ -153,7 +156,7 @@ namespace FlightPlanWin
 
 				// Create a new observation instance with the ICAO code of currently processed airfield,
 				// .. and available colour states to be used.
-				Observation ob = new Observation(af.ICAO, this.colourStates);
+				Observation ob = new Observation(af.ICAO, this._colourStates);
 				// Get the metar string.
 				af.Observation = ob.Metar;
 				// Get the colour code abbreviation.
@@ -197,12 +200,13 @@ namespace FlightPlanWin
                 progressBar1.Value = 0; // Reset the progress bar
             } else if (e.Cancelled) { // Handling of a cancellation event
                 statusLabel.Content = "Cancelled";
-                this.airfieldViewSource.Source = null; // Empty the contents of the grid.
+                this._airfieldViewSource.Source = null; // Empty the contents of the grid.
                 progressBar1.Value = 0; // reset progress
             } else {
 				// Populate the datagrid with the processed result.
-                this.airfieldViewSource.Source = (List<Airfield>)e.Result;
+                this._airfieldViewSource.Source = (List<Airfield>)e.Result;
                 statusLabel.Content = "";
+				this._dataUpdated = DateTime.Now;
             }
         }
 
@@ -227,7 +231,7 @@ namespace FlightPlanWin
 		///</summary>
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
-            worker.CancelAsync();
+            _worker.CancelAsync();
         }
 
         private FlowDocument CreateDocument(PrintDialog printDlg)
@@ -237,10 +241,11 @@ namespace FlightPlanWin
             fd.PageHeight = printDlg.PrintableAreaHeight;
             fd.IsColumnWidthFlexible = false;
             fd.ColumnWidth = printDlg.PrintableAreaWidth;
-            fd.FontSize = 10;
+            fd.FontSize = PRINT_FONT_SIZE;
+			fd.FontFamily = new FontFamily(PRINT_FONT_FAMILY);
             Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
 
-            fd.Blocks.Add(new Paragraph(new Run("Observations for " + this.comboBox1.SelectedItem.ToString() + " - " + DateTime.Now.ToString() + " (local time)")));
+            fd.Blocks.Add(new Paragraph(new Run("Observations for " + this.comboBox1.SelectedItem.ToString() + " - " + this._dataUpdated.ToString() + " (local time)")));
             Table table = new Table();
 
             table.RowGroups.Add(new TableRowGroup());
@@ -321,7 +326,7 @@ namespace FlightPlanWin
 
         private void Print_Click(object sender, RoutedEventArgs e)
         {
-            if (this.comboBox1.SelectedItem == null || worker.IsBusy == true || airfieldDataGrid.ItemsSource == null) {
+            if (this.comboBox1.SelectedItem == null || _worker.IsBusy == true || airfieldDataGrid.ItemsSource == null) {
                 statusLabel.Content = "Not ready to print, please fetch a list of airfields first";
                 return;
             }
@@ -343,7 +348,7 @@ namespace FlightPlanWin
 
         private void PrintPreview_Click(object sender, RoutedEventArgs e)
         {
-            if (this.comboBox1.SelectedItem == null || worker.IsBusy == true || airfieldDataGrid.ItemsSource == null) {
+            if (this.comboBox1.SelectedItem == null || _worker.IsBusy == true || airfieldDataGrid.ItemsSource == null) {
                 statusLabel.Content = "Not ready to print, please fetch a list of airfields first";
                 return;
             }
@@ -352,6 +357,8 @@ namespace FlightPlanWin
             PrintDialog printDlg = new PrintDialog();
             printDlg.PrintTicket.PageOrientation = PageOrientation.Landscape;
             fd = CreateDocument(printDlg);
+			fd.FontFamily = new FontFamily(PRINT_FONT_FAMILY);
+			fd.FontSize = PRINT_FONT_SIZE;
 
             try {
                 DocumentPaginator paginator = ((IDocumentPaginatorSource)fd).DocumentPaginator;
@@ -376,7 +383,7 @@ namespace FlightPlanWin
 
 		private void About_Click(object sender, RoutedEventArgs e)
 		{
-			this.aboutBox.Show();			
+			this._aboutBox.Show();			
 		}
 
 		private void Exit_Click(object sender, RoutedEventArgs e)
