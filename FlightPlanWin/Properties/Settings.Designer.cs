@@ -22,5 +22,41 @@ namespace FlightPlanWin.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double HomeLatitude {
+            get {
+                return ((double)(this["HomeLatitude"]));
+            }
+            set {
+                this["HomeLatitude"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double HomeLongitude {
+            get {
+                return ((double)(this["HomeLongitude"]));
+            }
+            set {
+                this["HomeLongitude"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HomeICAO {
+            get {
+                return ((string)(this["HomeICAO"]));
+            }
+            set {
+                this["HomeICAO"] = value;
+            }
+        }
     }
 }

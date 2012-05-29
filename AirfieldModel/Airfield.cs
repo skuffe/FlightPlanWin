@@ -28,5 +28,7 @@ namespace FlightPlanModel
 		public string ObservationAge { get; set; }
         [NotMappedAttribute]
         public bool isInvalid { get; set; }
+		[NotMappedAttribute]
+		public string Distance { get; set; }
 	}
 }

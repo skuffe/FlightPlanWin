@@ -74,7 +74,10 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="ColourState.cs" />
+    <Compile Include="GeoCalc.cs" />
+    <Compile Include="LatLonPoint.cs" />
     <Compile Include="Observation.cs" />
+    <Compile Include="Settings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

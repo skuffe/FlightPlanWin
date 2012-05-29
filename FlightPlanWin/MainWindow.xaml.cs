@@ -35,9 +35,9 @@ namespace FlightPlanWin
 		private AboutBox _aboutBox = new AboutBox();
 		private DateTime? _dataUpdated = null;
 
-		private const int TABLE_COLUMNS = 7;
-		private const string PRINT_FONT_FAMILY = "Calibri Verdana sans-serif";
+		private const int TABLE_COLUMNS = 8;
 		private const int PRINT_FONT_SIZE = 10;
+		private const string PRINT_FONT_FAMILY = "Calibri Verdana sans-serif";
 
 		///<summary>
 		///Constructor
@@ -181,6 +181,8 @@ namespace FlightPlanWin
 				af.ObservationAge = ob.ObservationAge;
 				// Gets valid state - will be false if the data is over an hour old.
 				af.isInvalid = ob.isInvalid;
+				// Calculate distance
+				af.Distance = String.Format("{0:0.00} NM", Math.Round(GeoCalc.RhumbDistance(new LatLonPoint(Properties.Settings.Default.HomeLatitude, Properties.Settings.Default.HomeLongitude), new LatLonPoint((double)af.Latitude, (double)af.Longitude)), 2));
 				// Update counter to reflect progress.
 				counter++;
 			}
@@ -266,16 +268,18 @@ namespace FlightPlanWin
             table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[1].Header.ToString()))));
             // ICAO
             table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[2].Header.ToString()))));
-            // Visibility
+            // Distance
             table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[5].Header.ToString()))));
-            // Cloudbase
+            // Visibility
             table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[6].Header.ToString()))));
-            // Colour State
+            // Cloudbase
             table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[7].Header.ToString()))));
-            // Observation Age
+            // Colour State
             table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[8].Header.ToString()))));
-            // Observation
+            // Observation Age
             table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[9].Header.ToString()))));
+            // Observation
+            table.RowGroups[0].Rows[0].Cells.Add(new TableCell(new Paragraph(new Run(this.airfieldDataGrid.Columns[10].Header.ToString()))));
 
 
             for (int h = 0; h < this.airfieldDataGrid.Items.Count; h++) {
@@ -285,6 +289,7 @@ namespace FlightPlanWin
                 table.RowGroups[0].Rows.Add(tr);
                 table.RowGroups[0].Rows[h + 1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Name))));
                 table.RowGroups[0].Rows[h + 1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).ICAO))));
+                table.RowGroups[0].Rows[h + 1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Distance.ToString()))));
                 table.RowGroups[0].Rows[h + 1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Visibility.ToString()))));
                 table.RowGroups[0].Rows[h + 1].Cells.Add(new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).Cloudbase.ToString()))));
                 TableCell tc_ColourState = new TableCell(new Paragraph(new Run((string)((Airfield)this.airfieldDataGrid.Items[h]).ColourState)));
@@ -389,6 +394,14 @@ namespace FlightPlanWin
 		private void Exit_Click(object sender, RoutedEventArgs e)
 		{
 			Application.Current.Shutdown();
+		}
+
+		private void SetAsHome_Click(object sender, RoutedEventArgs e)
+		{
+			Airfield selectedAirfield = (Airfield)this.airfieldDataGrid.SelectedItem;
+			Properties.Settings.Default.HomeLatitude = (double)selectedAirfield.Latitude;
+			Properties.Settings.Default.HomeLongitude = (double)selectedAirfield.Longitude;
+			Properties.Settings.Default.Save();
 		}
 	}
 }

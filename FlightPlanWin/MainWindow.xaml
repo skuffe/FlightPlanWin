@@ -13,6 +13,7 @@
 				<DataGridTextColumn x:Name="iCAOColumn" Binding="{Binding Path=ICAO}" Header="ICAO" Width="Auto" />
 				<DataGridTextColumn x:Name="latitudeColumn" Binding="{Binding Path=Latitude}" Header="Latitude" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="longitudeColumn" Binding="{Binding Path=Longitude}" Header="Longitude" Width="SizeToHeader" />
+				<DataGridTextColumn x:Name="distanceColumn" Binding="{Binding Path=Distance}" Header="Distance" Width="Auto" />
 				<DataGridTextColumn x:Name="visibilityColumn" Binding="{Binding Path=Visibility}" Header="Visibility" Width="Auto" />
 				<DataGridTextColumn x:Name="cloudbaseColumn" Binding="{Binding Path=Cloudbase}" Header="Cloudbase" Width="Auto" />
 				<DataGridTextColumn x:Name="colourStateColumn" Binding="{Binding Path=ColourState}" Header="Colour" Width="SizeToHeader">
@@ -63,6 +64,11 @@
 				<!--<DataGridTextColumn x:Name="tilecolColumn" Binding="{Binding Path=Tilecol}" Header="Tilecol" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="tilerowColumn" Binding="{Binding Path=Tilerow}" Header="Tilerow" Width="SizeToHeader" />-->
 			</DataGrid.Columns>
+			<DataGrid.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="Set as home" Click="SetAsHome_Click" />
+				</ContextMenu>
+			</DataGrid.ContextMenu>
 		</DataGrid>
         <ProgressBar Height="23" HorizontalAlignment="Stretch" Name="progressBar1" VerticalAlignment="Top" Width="Auto" Margin="377,24,0,0" />
         <Label Height="23" Name="statusLabel" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" FontWeight="Bold" FontSize="10" Width="Auto" HorizontalAlignment="Center" Margin="377,24,0,0" />
