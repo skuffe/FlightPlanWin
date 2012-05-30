@@ -19,6 +19,10 @@ using System.Printing;
 using System.Windows.Xps.Packaging;
 using System.IO;
 using System.Windows.Xps;
+using System.Globalization;
+using System.Threading;
+using System.Windows.Markup;
+using System.Resources;
 
 namespace FlightPlanWin
 {
@@ -34,6 +38,8 @@ namespace FlightPlanWin
 		private List<ColourState> _colourStates = new List<ColourState>();
 		private AboutBox _aboutBox = new AboutBox();
 		private DateTime? _dataUpdated = null;
+		private ResourceManager _resourceManager = null;
+		private CultureInfo _currentCulture = null;
 
 		private const int TABLE_COLUMNS = 8;
 		private const int PRINT_FONT_SIZE = 10;
@@ -44,9 +50,24 @@ namespace FlightPlanWin
 		///</summary>
 		public MainWindow()
 		{
-			InitializeComponent();
-            InitializeBackgroundWorker();
-			InitializeColourStates();
+			CultureInfo ci = new CultureInfo("en-GB");
+			Thread.CurrentThread.CurrentCulture = ci;
+			Thread.CurrentThread.CurrentUICulture = ci;
+			this._currentCulture = ci;
+
+			// Ensure the current culture passed into bindings 
+			// is the OS culture. By default, WPF uses en-US 
+			// as the culture, regardless of the system settings.
+			FrameworkElement.LanguageProperty.OverrideMetadata(
+			  typeof(FrameworkElement),
+			  new FrameworkPropertyMetadata(
+				  XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
+			this._resourceManager = new ResourceManager("FlightPlanWin.L10n.Language", System.Reflection.Assembly.GetExecutingAssembly());
+
+			this.InitializeComponent();
+            this.InitializeBackgroundWorker();
+			this.InitializeColourStates();
 		}
 
 		///<summary>
@@ -68,15 +89,15 @@ namespace FlightPlanWin
         private void InitializeBackgroundWorker()
         {
 			// Allow worker to report progress.
-            _worker.WorkerReportsProgress = true;
+            this._worker.WorkerReportsProgress = true;
 			// Allow cancellation of a running worker.
-            _worker.WorkerSupportsCancellation = true;
+            this._worker.WorkerSupportsCancellation = true;
 			// Add event handler for when RunWorkerAsync() is called - i.e. start of thread.
-            _worker.DoWork += new DoWorkEventHandler(worker_DoWork);
+            this._worker.DoWork += new DoWorkEventHandler(worker_DoWork);
 			// Add event handler for when the work has been completed.
-            _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
+            this._worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
 			// Add event handler for when a progress change occurs.
-            _worker.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
+            this._worker.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
         }
 		
 		///<summary>
@@ -107,7 +128,7 @@ namespace FlightPlanWin
 		///</summary>
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectionChangedHandler();
+            this.SelectionChangedHandler();
         }
 
 		///<summary>
@@ -115,11 +136,12 @@ namespace FlightPlanWin
 		///</summary>
         private void SelectionChangedHandler()
         {
-            if (!_worker.IsBusy) {
-                statusLabel.Content = "Fetching data, please wait...";
-                _worker.RunWorkerAsync(comboBox1.SelectedItem.ToString());
+            if (!this._worker.IsBusy) {
+                this.statusLabel.Content = "Fetching data, please wait...";
+				this.btnStop.IsEnabled = true;
+                this._worker.RunWorkerAsync(this.comboBox1.SelectedItem.ToString());
             } else {
-                statusLabel.Content = "Please wait while the fetcher finishes...";
+                this.statusLabel.Content = "Please wait while the fetcher finishes...";
             }
         }
 
@@ -133,7 +155,7 @@ namespace FlightPlanWin
             string selectedValue = (string)e.Argument;
             
 			// Fetch a list of airfields in the specified country from database.
-            var airfields = (from a in _context.Airfields
+            var airfields = (from a in this._context.Airfields
                              where a.Country == selectedValue
                              orderby a.Name
                              select a).ToList();
@@ -162,27 +184,16 @@ namespace FlightPlanWin
 				// Get the colour code abbreviation.
 				af.ColourState = ob.ColourState.Abbreviation.ToString();
 
-				// Get cloudstate if available.
-				if (!ob.Cloudbase.ToString().Equals("")) {
-					af.Cloudbase = ob.Cloudbase.ToString() + " ft";
-				} else {
-					af.Cloudbase = "N/A";
-				}
+				af.Cloudbase = ob.Cloudbase;
 
-				// Get visibility if available.
-				if (ob.Visibility >= 9999) { // Display visibility as >10km if visibility is >=9999 meters.
-					af.Visibility = "> 10km";
-				} else if (!ob.Visibility.ToString().Equals("")) {
-					af.Visibility = ob.Visibility.ToString() + " m"; // Display as meters.
-				} else {
-					af.Visibility = "N/A";
-				}
+				af.Visibility = ob.Visibility;
 				// Get the age of the observation.
-				af.ObservationAge = ob.ObservationAge;
+				af.ObservationAge = String.Format(this._resourceManager.GetString("GridColumn_ObservationAge_Format", this._currentCulture),
+													(int)ob.ObservationAge.TotalHours, ob.ObservationAge.Minutes);
 				// Gets valid state - will be false if the data is over an hour old.
 				af.isInvalid = ob.isInvalid;
 				// Calculate distance
-				af.Distance = String.Format("{0:0.00} NM", Math.Round(GeoCalc.RhumbDistance(new LatLonPoint(Properties.Settings.Default.HomeLatitude, Properties.Settings.Default.HomeLongitude), new LatLonPoint((double)af.Latitude, (double)af.Longitude)), 2));
+				af.Distance = Math.Round(GeoCalc.RhumbDistance(new LatLonPoint(Properties.Settings.Default.HomeLatitude, Properties.Settings.Default.HomeLongitude), new LatLonPoint((double)af.Latitude, (double)af.Longitude)), 2);
 				// Update counter to reflect progress.
 				counter++;
 			}
@@ -198,18 +209,20 @@ namespace FlightPlanWin
 			// Error/Exception handling - e.Error will contain the actual exception thrown.
             if (e.Error != null) {
 				// Update the label on top of the progressbar with the exception error message.
-                statusLabel.Content = e.Error.Message;
-                progressBar1.Value = 0; // Reset the progress bar
+                this.statusLabel.Content = e.Error.Message;
+                this.progressBar1.Value = 0; // Reset the progress bar
             } else if (e.Cancelled) { // Handling of a cancellation event
-                statusLabel.Content = "Cancelled";
+                this.statusLabel.Content = "Cancelled";
                 this._airfieldViewSource.Source = null; // Empty the contents of the grid.
-                progressBar1.Value = 0; // reset progress
+                this.progressBar1.Value = 0; // reset progress
             } else {
 				// Populate the datagrid with the processed result.
                 this._airfieldViewSource.Source = (List<Airfield>)e.Result;
-                statusLabel.Content = "";
+                this.statusLabel.Content = "";
 				this._dataUpdated = DateTime.Now;
             }
+			this.btnStop.IsEnabled = false;
+			this.btnRefresh.IsEnabled = true;
         }
 
 		///<summary>
@@ -217,7 +230,7 @@ namespace FlightPlanWin
 		///</summary>
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            progressBar1.Value = e.ProgressPercentage; // Update the progressbar.
+            this.progressBar1.Value = e.ProgressPercentage; // Update the progressbar.
         }
 
 		///<summary>
@@ -225,7 +238,7 @@ namespace FlightPlanWin
 		///</summary>
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            SelectionChangedHandler();
+            this.SelectionChangedHandler();
         }
 
 		///<summary>
@@ -233,7 +246,7 @@ namespace FlightPlanWin
 		///</summary>
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
-            _worker.CancelAsync();
+            this._worker.CancelAsync();
         }
 
         private FlowDocument CreateDocument(PrintDialog printDlg)
@@ -353,8 +366,8 @@ namespace FlightPlanWin
 
         private void PrintPreview_Click(object sender, RoutedEventArgs e)
         {
-            if (this.comboBox1.SelectedItem == null || _worker.IsBusy == true || airfieldDataGrid.ItemsSource == null) {
-                statusLabel.Content = "Not ready to print, please fetch a list of airfields first";
+            if (this.comboBox1.SelectedItem == null || this._worker.IsBusy == true || this.airfieldDataGrid.ItemsSource == null) {
+                this.statusLabel.Content = "Not ready to print, please fetch a list of airfields first";
                 return;
             }
 

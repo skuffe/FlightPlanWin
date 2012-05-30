@@ -16,11 +16,10 @@ namespace FlightPlanWin
 			double distance = 0.0;
 			double deltaCoLat = (to.Latitude - from.Latitude) * DEG_TO_RAD;
 
-			if (rhumbBearing == 90.0 || rhumbBearing == 270.0) {
+			if (rhumbBearing == 90.0 || rhumbBearing == 270.0)
 				distance = Math.Abs(EARTH_RADIUS * Math.Cos(from.Latitude) * ((to.Longitude - from.Longitude) * DEG_TO_RAD));
-			} else {
+			else
 				distance = Math.Abs((deltaCoLat * EARTH_RADIUS) / Math.Cos(rhumbBearing * DEG_TO_RAD));
-			}
 
 			return distance;
 		}

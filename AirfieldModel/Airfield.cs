@@ -16,12 +16,15 @@ namespace FlightPlanModel
 		public decimal Longitude { get; set; }
 		public int Tilecol { get; set; }
 		public int Tilerow { get; set; }
+
+		// Bellow are not-mapped attributes, which means that they are not to be mapped to a database column;
+		// .. we will handle filling them out with data ourselves.
 		[NotMappedAttribute]
 		public string Observation { get; set; }
 		[NotMappedAttribute]
-		public string Visibility { get; set; }
+		public int? Visibility { get; set; }
 		[NotMappedAttribute]
-		public string Cloudbase { get; set; }
+		public int? Cloudbase { get; set; }
 		[NotMappedAttribute]
 		public string ColourState { get; set; }
 		[NotMappedAttribute]
@@ -29,6 +32,6 @@ namespace FlightPlanModel
         [NotMappedAttribute]
         public bool isInvalid { get; set; }
 		[NotMappedAttribute]
-		public string Distance { get; set; }
+		public double Distance { get; set; }
 	}
 }

@@ -20,7 +20,7 @@ namespace FlightPlanWin
 		public string ICAO { get; set; }
 		public ColourState ColourState { get; set; }
 		public List<ColourState> ColourStates { get; set; }
-		public string ObservationAge { get; set; }
+		public TimeSpan ObservationAge { get; set; }
         public bool isInvalid { get; set; }
 
         /**
@@ -39,7 +39,7 @@ namespace FlightPlanWin
 			this.ICAO = ICAO;
 			this.ColourStates = ColourStates;
             //The age is initially set to N/A and is later overwritten if applicable
-			this.ObservationAge = "N/A";
+			//this.ObservationAge = "N/A";
             //Each observation is both fetched and parsed in the constructor
 			this.getObservation();
 			this.parseObservation();
@@ -86,11 +86,14 @@ namespace FlightPlanWin
 			match = Regex.Match(this.Metar, @"([0-9]{2})([0-9]{2})([0-9]{2})Z"); //Finds the datetime of the observation in the format DDHHMMZ
 			if (match.Success) { //Found a match
 				string dateFormat = "yyyy-M-dd HH:mm"; //Dateformat for the converter
-				string dateStr = DateTime.UtcNow.Year + "-" + DateTime.UtcNow.Month + "-" + match.Groups[1] + " " + match.Groups[2] + ":" + match.Groups[3]; //Create datestring from observation
+				string dateStr = String.Format("{0}-{1}-{2} {3}:{4}",
+												DateTime.UtcNow.Year, DateTime.UtcNow.Month,
+												match.Groups[1], match.Groups[2], match.Groups[3]);
 				DateTime convertedDate = DateTime.SpecifyKind(DateTime.ParseExact(dateStr, dateFormat, CultureInfo.InvariantCulture), DateTimeKind.Utc);  //Create converted datetimeobject in UTC
 				DateTime now = DateTime.Now; //Get current local time
 				TimeSpan age = now - convertedDate.ToLocalTime(); //Calculate timespan. ToLocalTime() converts the UTC DateTime object to localtime i.e. adding 2 hours in Denmark (Summertime)
-				this.ObservationAge = String.Format("{0}h {1}m", (int)age.TotalHours, age.Minutes); //Sets ObservationAge property of this object as a string
+				//this.ObservationAge = String.Format("{0:00}:{1:00}", (int)age.TotalHours, age.Minutes); //Sets ObservationAge property of this object as a string
+				this.ObservationAge = age;
                 //If total observation age exceeds 1 hour the observation is marked as invalid
                 if (age.TotalHours > 1)  {
                     this.isInvalid = true;
