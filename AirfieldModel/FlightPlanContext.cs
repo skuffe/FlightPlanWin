@@ -9,5 +9,7 @@ namespace FlightPlanModel
 	public partial class FlightPlanContext : DbContext
 	{
 		public DbSet<Airfield> Airfields { get; set; }
+
+		public FlightPlanContext() : base("flightPlanConnectionString") { }
 	}
 }
