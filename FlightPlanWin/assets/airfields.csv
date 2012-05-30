@@ -1,4 +1,4 @@
-NAME,ICAO,COUNTRY,LAT,LONG,TILECOL,TILEROW
+ÔªøNAME,ICAO,COUNTRY,LAT,LONG,TILECOL,TILEROW
 Farah,OAFR,Afghanistan,32.367,62.183,242,122
 Faizabad,OAFZ,Afghanistan,37.117,70.517,250,127
 Herat,OAHR,Afghanistan,34.217,62.217,242,124
@@ -1240,7 +1240,7 @@ Tirstrup,EKAH,Denmark,56.3,10.62,190,146
 Anholt Island Automated Reporting Station,EKAT,Denmark,56.7,11.55,191,146
 Avno Danish Air Force Base,EKAV,Denmark,55.083,11.783,191,145
 Billund,EKBI,Denmark,55.742,9.153,189,145
-Kõbenhavn/Kastrup,EKCH,Denmark,55.618,12.657,192,145
+K√∏benhavn/Kastrup,EKCH,Denmark,55.618,12.657,192,145
 Esbjerg,EKEB,Denmark,55.527,8.553,188,145
 Lindtorp Airport,EKHO,Denmark,56.4,8.45,188,146
 Hadsund,EKHS,Denmark,56.756,10.229,190,146
@@ -1248,7 +1248,7 @@ Karup,EKKA,Denmark,56.3,9.113,189,146
 Maribo Lufthavn,EKMB,Denmark,54.7,11.45,191,144
 Odense / Beldringe,EKOD,Denmark,55.483,10.333,190,145
 Raarup/Horsens,EKRA,Denmark,55.778,9.938,189,145
-Kõbenhavn/Roskilde,EKRK,Denmark,55.587,12.133,192,145
+K√∏benhavn/Roskilde,EKRK,Denmark,55.587,12.133,192,145
 Bornholm/Roenne,EKRN,Denmark,55.063,14.76,194,145
 Soenderborg Lufthavn,EKSB,Denmark,54.967,9.783,189,144
 Sindal Flyveplads,EKSN,Denmark,57.5,10.217,190,147
@@ -1261,7 +1261,7 @@ Vamdrup,EKVD,Denmark,55.433,9.333,189,145
 Soervaag / Vagar,EKVG,Denmark,62.067,-7.283,172,152
 Stauning Lufthavn,EKVJ,Denmark,56,8.35,188,146
 Vaerloese,EKVL,Denmark,55.77,12.325,192,145
-èlborg,EKYT,Denmark,57.093,9.85,189,147
+Aalborg,EKYT,Denmark,57.093,9.85,189,147
 Djibouti,HFFF,Djibouti,11.55,43.15,223,101
 Canefield Airport,TDCF,Dominica,15.533,-61.4,118,105
 Melville Hall Airport,TDPD,Dominica,15.533,-61.3,118,105

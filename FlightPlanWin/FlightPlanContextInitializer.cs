@@ -13,15 +13,16 @@ namespace FlightPlanWin
         protected override void Seed(FlightPlanContext context)
         {
             var airfields = File.ReadAllLines("assets/airfields.csv")
+                   .Skip(1)
                    .Select(x => x.Split(','))
                    .Select(x => new Airfield {
                        Name = x[0],
                        ICAO = x[1],
                        Country = x[2],
-                       //Latitude = (decimal)Double.Parse(x[3], new System.Globalization.CultureInfo("en-GB", false)),
-                       //Longitude = (decimal)Double.Parse(x[4],System.Globalization.CultureInfo.InvariantCulture),
-                       //Tilecol = int.Parse(x[5]),
-                       //Tilerow = int.Parse(x[6])
+                       Latitude = decimal.Parse(x[3],System.Globalization.CultureInfo.InvariantCulture),
+                       Longitude = decimal.Parse(x[4],System.Globalization.CultureInfo.InvariantCulture),
+                       Tilecol = int.Parse(x[5]),
+                       Tilerow = int.Parse(x[6])
                    });
             foreach (Airfield airfield in airfields) {
                 context.Airfields.Add(airfield);
