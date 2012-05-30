@@ -22,9 +22,9 @@ namespace FlightPlanModel
 		[NotMappedAttribute]
 		public string Observation { get; set; }
 		[NotMappedAttribute]
-		public int? Visibility { get; set; }
+		public string Visibility { get; set; }
 		[NotMappedAttribute]
-		public int? Cloudbase { get; set; }
+		public string Cloudbase { get; set; }
 		[NotMappedAttribute]
 		public string ColourState { get; set; }
 		[NotMappedAttribute]

@@ -189,9 +189,27 @@ namespace FlightPlanWin
 				// Get the colour code abbreviation.
 				af.ColourState = ob.ColourState.Abbreviation.ToString();
 
-				af.Cloudbase = ob.Cloudbase;
+//				af.Cloudbase = ob.Cloudbase;
 
-				af.Visibility = ob.Visibility;
+				// Get cloudstate if available.
+				if (!ob.Cloudbase.ToString().Equals("")) {
+					af.Cloudbase = ob.Cloudbase.ToString() + " ft";
+				} else {
+					af.Cloudbase = "N/A";
+				}
+
+//				af.Visibility = ob.Visibility;
+				      // Get visibility if available.
+
+
+		        if (ob.Visibility >= 9999) { // Display visibility as >10km if visibility is >=9999 meters.
+				    af.Visibility = "> 10km";
+		        } else if (!ob.Visibility.ToString().Equals("")) {
+					af.Visibility = ob.Visibility.ToString() + " m"; // Display as meters.
+			    } else {
+					af.Visibility = "N/A";
+				}
+
 				// Get the age of the observation.
 				af.ObservationAge = String.Format(this._resourceManager.GetString("GridColumn_ObservationAge_Format", this._currentCulture),
 													(int)ob.ObservationAge.TotalHours, ob.ObservationAge.Minutes);

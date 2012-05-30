@@ -17,8 +17,8 @@
 				<DataGridTextColumn x:Name="latitudeColumn" Binding="{Binding Path=Latitude}" Header="{x:Static resx:Language.GridColumn_Latitude}" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="longitudeColumn" Binding="{Binding Path=Longitude}" Header="{x:Static resx:Language.GridColumn_Longitude}" Width="SizeToHeader" />
 				<DataGridTextColumn x:Name="distanceColumn" Binding="{Binding Path=Distance, StringFormat='\{0:0.00\} NM'}" Header="{x:Static resx:Language.GridColumn_Distance}" Width="Auto" />
-				<DataGridTextColumn x:Name="visibilityColumn" Binding="{Binding Path=Visibility, Converter={StaticResource visibilityConverter }, TargetNullValue='N/A'}" Header="{x:Static resx:Language.GridColumn_Visibility}" Width="Auto" />
-				<DataGridTextColumn x:Name="cloudbaseColumn" Binding="{Binding Path=Cloudbase,TargetNullValue='N/A',StringFormat='\{0\} ft'}" Header="{x:Static resx:Language.GridColumn_Cloudbase}" Width="Auto" />
+				<DataGridTextColumn x:Name="visibilityColumn" Binding="{Binding Path=Visibility}" Header="{x:Static resx:Language.GridColumn_Visibility}" Width="Auto" />
+				<DataGridTextColumn x:Name="cloudbaseColumn" Binding="{Binding Path=Cloudbase}" Header="{x:Static resx:Language.GridColumn_Cloudbase}" Width="Auto" />
 				<DataGridTextColumn x:Name="colourStateColumn" Binding="{Binding Path=ColourState}" Header="{x:Static resx:Language.GridColumn_ColourState}" Width="SizeToHeader">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
