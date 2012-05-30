@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.Text.RegularExpressions;
-using System.Windows.Media;
 using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace FlightPlanWin
 {

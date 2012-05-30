@@ -1,28 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Printing;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using FlightPlanModel;
-using System.ComponentModel;
-using System.Data;
-using System.Printing;
-using System.Windows.Xps.Packaging;
-using System.IO;
-using System.Windows.Xps;
-using System.Globalization;
-using System.Threading;
 using System.Windows.Markup;
-using System.Resources;
+using System.Windows.Media;
+using System.Windows.Xps;
+using System.Windows.Xps.Packaging;
+using FlightPlanModel;
 
 namespace FlightPlanWin
 {
