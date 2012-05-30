@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="ColourState.cs" />
     <Compile Include="Converters.cs" />
+    <Compile Include="FlightPlanContextInitializer.cs" />
     <Compile Include="GeoCalc.cs" />
     <Compile Include="LatLonPoint.cs" />
     <Compile Include="L10n\Language.da-DK.Designer.cs">

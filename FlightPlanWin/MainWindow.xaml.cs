@@ -50,25 +50,30 @@ namespace FlightPlanWin
 		///</summary>
 		public MainWindow()
 		{
-			CultureInfo ci = new CultureInfo("en-GB");
-			Thread.CurrentThread.CurrentCulture = ci;
-			Thread.CurrentThread.CurrentUICulture = ci;
-			this._currentCulture = ci;
-
-			// Ensure the current culture passed into bindings 
-			// is the OS culture. By default, WPF uses en-US 
-			// as the culture, regardless of the system settings.
-			FrameworkElement.LanguageProperty.OverrideMetadata(
-			  typeof(FrameworkElement),
-			  new FrameworkPropertyMetadata(
-				  XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
-
-			this._resourceManager = new ResourceManager("FlightPlanWin.L10n.Language", System.Reflection.Assembly.GetExecutingAssembly());
-
+            Database.SetInitializer(new FlightPlanContextInitializer());
+            this.InitializeLocalization();
 			this.InitializeComponent();
             this.InitializeBackgroundWorker();
 			this.InitializeColourStates();
 		}
+
+        private void InitializeLocalization()
+        {
+            //CultureInfo ci = new CultureInfo("en-GB");
+            //Thread.CurrentThread.CurrentCulture = ci;
+            //Thread.CurrentThread.CurrentUICulture = ci;
+            //this._currentCulture = ci;
+
+            // Ensure the current culture passed into bindings 
+            // is the OS culture. By default, WPF uses en-US 
+            // as the culture, regardless of the system settings.
+            FrameworkElement.LanguageProperty.OverrideMetadata(
+              typeof(FrameworkElement),
+              new FrameworkPropertyMetadata(
+                  XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
+            this._resourceManager = new ResourceManager("FlightPlanWin.L10n.Language", System.Reflection.Assembly.GetExecutingAssembly());
+        }
 
 		///<summary>
 		///Initialization of available colour states
